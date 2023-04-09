@@ -1,5 +1,8 @@
+from fileinput import filename
 from tkinter import *
-import tkinter.font as font
+from tkinter import filedialog
+from PIL import ImageTk, Image
+
 raiz = Tk()
 
 class Aplicacao():
@@ -32,7 +35,7 @@ class Aplicacao():
 
   def botoes(self):
 
-    self.bt_1 = Button(self.frame_1, text = "ENVIAR", fg='white',bg='#f4bc44',font=('JasmineUPC', 8))
+    self.bt_1 = Button(self.frame_1, text = "ENVIAR", fg='white',bg='#f4bc44',font=('JasmineUPC', 8),command=self.load_image)
     self.bt_1.place(relx=0.5, rely=0.2, relwidth=0.35, relheight=0.1)
 
     self.bt_2 = Button(self.frame_1, text="ANUNCIAR", bg='#f4bc44', fg='white',font=('JasmineUPC', 8))
@@ -52,6 +55,7 @@ class Aplicacao():
     self.slider.place(anchor='nw', relx=0.5, rely=0.4, relwidth=0.35, relheight=0.1)
     self.lb_maximo = Label(self.frame_1, text="*Valor máximo \n de aluguel mensal", font=('JasmineUPC', 8),bg='#fff', fg='#f4bc44')
     self.lb_maximo.place(relx=0.1, rely=0.4, relwidth=0.35)
+
   def on_change_scale(self, event):
     print(self.current_value.get())
 
@@ -111,5 +115,11 @@ class Aplicacao():
 
     self.entrada = Entry(self.frame_2,bg='#f4bc44', fg='white')
     self.entrada.place(relx= 0.1, rely = 0.7, relwidth= 0.75, relheight= 0.15)
+
+  def load_image(self):
+    self.filename = filedialog.askopenfilename()
+    if self.filename:
+      self.image = PhotoImage(file=filename)
+
 
 Aplicacao()
