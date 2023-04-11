@@ -1,4 +1,4 @@
-from app.features.roomie.model.ad import Ad
+from app.features.roomie.entities.ad import Ad
 
 
 class RoommateAd(Ad):
