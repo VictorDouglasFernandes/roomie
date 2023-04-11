@@ -1,8 +1,8 @@
 class Ad:
     def __init__(self, price, share_date, active=True):
         self.__price = price
-        self.__share_date = share_date
-        self.__active = active
+        self.__share_date = 123  # datetime.date.today() #data de publicação do anúncio, não consegui
+        self.__active = True  # por padrão, mas usuário pode mudar depois
 
     @property
     def price(self):

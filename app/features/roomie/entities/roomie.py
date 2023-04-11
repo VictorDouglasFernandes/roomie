@@ -1,7 +1,7 @@
 from app.commons.entities.ad import Ad
 
 
-class RoommateAd(Ad):
+class Roomie(Ad):
     def __init__(self, price, share_date, active, roommate_type, living_type, about, is_student=False,
                  is_smoker=False, has_pets=False, has_children=False, has_job=False):
         super().__init__(price, share_date, active)
