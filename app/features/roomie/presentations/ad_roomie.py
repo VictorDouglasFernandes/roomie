@@ -1,11 +1,10 @@
 from fileinput import filename
 from tkinter import *
 from tkinter import filedialog
-from PIL import ImageTk, Image
 
 raiz = Tk()
 
-class Aplicacao():
+class AdRoomie():
   def __init__(self):
     self.raiz = raiz
     self.tela()
@@ -122,4 +121,4 @@ class Aplicacao():
       self.image = PhotoImage(file=filename)
 
 
-Aplicacao()
+AdRoomie()
