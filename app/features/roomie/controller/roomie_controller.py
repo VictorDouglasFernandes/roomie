@@ -1,7 +1,7 @@
 from app.features.roomie.presentations.ad_roomie import AdRoomie
 
 
-class RoomieController():
+class RoomieController:
     def __int__(self):
         self.__roomies = []
         self.__ad_roomie = AdRoomie()
