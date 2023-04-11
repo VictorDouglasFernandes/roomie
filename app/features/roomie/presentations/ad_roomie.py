@@ -1,4 +1,3 @@
-from fileinput import filename
 from tkinter import *
 from tkinter import filedialog
 import os
@@ -38,23 +37,26 @@ class AdRoomie():
         self.frame_2.place(relx=0.5, rely=0.1, relheight=0.80, relwidth=0.4)
 
     def botoes(self):
-
+        #botão 1 - enviar foto de perfil
         self.bt_1 = Button(self.frame_1, text="ENVIAR", fg='white', bg='#f4bc44', font=('JasmineUPC', 8),
                            command=self.load_image)
         self.bt_1.place(relx=0.5, rely=0.2, relwidth=0.35, relheight=0.1)
 
+        # botão 2 - enviar anúncio
         self.bt_2 = Button(self.frame_1, text="ANUNCIAR", bg='#f4bc44', fg='white', font=('JasmineUPC', 8))
         self.bt_2.place(relx=0.5, rely=0.92, relwidth=0.35, relheight=0.05)
 
+        # botão 3 - voltar
         self.bt_3 = Button(self.frame_2, text="VOLTAR", bg='#f4bc44', fg='white')
         self.bt_3.place(relx=0.5, rely=0.92, relwidth=0.35, relheight=0.05)
 
-        ##criação de label
+        #criação de label
         self.lb_imagens = Label(self.frame_1, text="*Escolha uma\n  foto sua para \n se identificar",
                                 font=('JasmineUPC', 8), bg='#fff', fg='#f4bc44')
         self.lb_imagens.place(relx=0.1, rely=0.2, relwidth=0.35)
 
     def slider(self):
+        # slider - colocar preço máximo de aluguel
         self.current_value = DoubleVar()
         self.slider = Scale(self.frame_1, from_=200, to_=5000, orient='horizontal', highlightthickness=0,
                             variable=self.current_value,
@@ -65,16 +67,20 @@ class AdRoomie():
         self.lb_maximo.place(relx=0.1, rely=0.4, relwidth=0.35)
 
     def on_change_scale(self, event):
+        #função para pegar o valor máximo de aluguel
         print(self.current_value.get())
 
     def dropdown(self):
         self.clicked = StringVar()
+
+        # dropdown 1 - tipo de quarto
         self.drop = OptionMenu(self.frame_1, self.clicked, "Exclusivo", "Compartilhado")
         self.drop.config(bg='#f4bc44')
         self.drop.place(relx=0.5, rely=0.55, relwidth=0.35)
         self.lb_drop = Label(self.frame_1, text="*Tipo do \n quarto", font=('JasmineUPC', 8), bg='#fff', fg='#f4bc44')
         self.lb_drop.place(relx=0.1, rely=0.55, relwidth=0.35)
 
+        # dropdown 2 - tipo de convivência desejada
         self.drop2 = OptionMenu(self.frame_1, self.clicked, "Ocasional", "Regular", "Intensa")
         self.drop2.config(bg='#f4bc44')
         self.drop2.place(relx=0.5, rely=0.7, relwidth=0.35)
@@ -82,6 +88,7 @@ class AdRoomie():
                               fg='#f4bc44')
         self.lb_drop2.place(relx=0.1, rely=0.7, relwidth=0.35)
 
+        # dropdown 3 - atributos booleanos - estudante?
         self.drop3 = OptionMenu(self.frame_2, self.clicked, "Sim", "Não")
         self.drop3.set = "Sim"
         self.drop3.config(bg='#f4bc44')
@@ -89,6 +96,7 @@ class AdRoomie():
         self.lb_drop3 = Label(self.frame_2, text="Estudante?", font=('JasmineUPC', 8), bg='#fff', fg='#f4bc44')
         self.lb_drop3.place(relx=0.1, rely=0.2, relwidth=0.25)
 
+        # dropdown 4 - atributos booleanos - fumante?
         self.drop4 = OptionMenu(self.frame_2, self.clicked, "Sim", "Não")
         self.drop4.set = "Sim"
         self.drop4.config(bg='#f4bc44')
@@ -96,6 +104,7 @@ class AdRoomie():
         self.lb_drop4 = Label(self.frame_2, text="Fumante?", font=('JasmineUPC', 8), bg='#fff', fg='#f4bc44')
         self.lb_drop4.place(relx=0.1, rely=0.30, relwidth=0.25, relheight=0.05)
 
+        # dropdown 5 - atributos booleanos - trabalha?
         self.drop5 = OptionMenu(self.frame_2, self.clicked, "Sim", "Não")
         self.drop5.set = "Sim"
         self.drop5.config(bg='#f4bc44')
@@ -103,6 +112,7 @@ class AdRoomie():
         self.lb_drop5 = Label(self.frame_2, text="Trabalha?", font=('JasmineUPC', 8), bg='#fff', fg='#f4bc44')
         self.lb_drop5.place(relx=0.1, rely=0.30, relwidth=0.25, relheight=0.05)
 
+        # dropdown 6 - atributos booleanos - pet?
         self.drop6 = OptionMenu(self.frame_2, self.clicked, "Sim", "Não")
         self.drop6.set = "Sim"
         self.drop6.config(bg='#f4bc44')
@@ -110,6 +120,7 @@ class AdRoomie():
         self.lb_drop6 = Label(self.frame_2, text="Possui pet?", font=('JasmineUPC', 8), bg='#fff', fg='#f4bc44')
         self.lb_drop6.place(relx=0.1, rely=0.40, relwidth=0.25, relheight=0.05)
 
+        # dropdown 7 - atributos booleanos - filhos?
         self.drop7 = OptionMenu(self.frame_2, self.clicked, "Sim", "Não")
         self.drop7.set = "Sim"
         self.drop7.config(bg='#f4bc44')
@@ -118,6 +129,7 @@ class AdRoomie():
         self.lb_drop7.place(relx=0.1, rely=0.50, relwidth=0.25, relheight=0.05)
 
     def entrada(self):
+        #entrada de dados do atributo "sobre". usuário pode escrever um texto sobre si mesmo
         self.lb_entrada = Label(self.frame_2, text="Me conte mais sobre você :)", font=('JasmineUPC', 8), bg='#fff',
                                 fg='#f4bc44')
         self.lb_entrada.place(relx=0.10, rely=0.65)
@@ -126,6 +138,7 @@ class AdRoomie():
         self.entrada.place(relx=0.1, rely=0.7, relwidth=0.75, relheight=0.15)
 
     def load_image(self):
+        #carregamento da imagem de perfil do usuário. função vinculada ao self.bt_1, da função botoes
         self.filename = filedialog.askopenfilename()
         if self.filename:
             self.image = cv2.imread(self.filename)
@@ -135,7 +148,8 @@ class AdRoomie():
             filepath = os.path.join(directory, os.path.basename(self.filename))
             cv2.imwrite(filepath, self.image)
             imagem = Image.open(self.filename)
-            # Redimensionar a imagem para que caiba na janela do tkinter
+
+            # Redimensionar a imagem para que caiba na janela
             imagem = imagem.resize((300, 300), Image.ANTIALIAS)
 
             # Criar um objeto ImageTk para exibir a imagem na janela do tkinter
@@ -144,6 +158,5 @@ class AdRoomie():
             # Substituir o botão "Enviar" com a miniatura da imagem
             self.bt_1.config(image=imagem_tk)
             self.bt_1.image = imagem_tk
-
 
 AdRoomie()
