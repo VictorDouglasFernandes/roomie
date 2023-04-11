@@ -11,7 +11,7 @@ class DefaultLabelOptionsMenu:
                  clicked,
                  options=["Sim", "Não"],
                  rely=0.2,
-                 relheight=None,
+                 relheight=0.05,
                  lrelwidth=0.35):
         self.clicked = clicked
         self.menu = OptionMenu(master, clicked, *options)
