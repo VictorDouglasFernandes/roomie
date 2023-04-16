@@ -17,10 +17,10 @@ class RoomDB(DBHelper):
         if isinstance(room, RoomAd) and (room.id, str):
             super().add(room.id, room)
 
-    def get(self, key: int):
-        if isinstance(key, int):
+    def get(self, key: str):
+        if isinstance(key, str):
             return super().get(key)
 
-    def remove(self, key: int):
-        if isinstance(key, int):
+    def remove(self, key: str):
+        if isinstance(key, str):
             return super().remove(key)

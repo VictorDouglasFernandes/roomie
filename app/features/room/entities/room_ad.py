@@ -21,7 +21,7 @@ class RoomAd:
         self.lobby = None
         self.pool = None
         self.party_room = None
-        if isinstance(email, int):
+        if isinstance(email, str):
             self.email = email
         if isinstance(price, float):
             self.price = price

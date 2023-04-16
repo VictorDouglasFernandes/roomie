@@ -1,14 +1,15 @@
 from tkinter import *
 
 from app.commons.colors.colors import *
+from app.commons.navigation import Navigation
 from app.commons.ui.default_single_frame import DefaultSingleFrame
-from app.features.room.controller.room_controller import RoomController
-from app.features.room.entities.room_ad import RoomAd
 
 
 class ListRoom:
-    def __init__(self, controller: RoomController):
-        self.controller = controller
+    def __init__(self, rooms=None):
+        self.rooms = rooms
+        self.navigation = None
+        self.selected_id = None
         self.raiz = Tk()
         self.base = DefaultSingleFrame(self.raiz, title="QUARTOS DISPONÍVEIS")
         self.frame = self.base.frame
@@ -27,10 +28,14 @@ class ListRoom:
 
     def see_selected(self):
         if len(self.listbox.curselection()) > 0:
-            print(list(self.controller.rooms)[self.listbox.curselection()[0]])
+            print(self.rooms[self.listbox.curselection()[0]])
+            self.selected_id = self.listbox.curselection()[0]
+            self.navigation = Navigation.GET
+            self.raiz.destroy()
 
     def back(self):
-        print('back')
+        self.navigation = Navigation.BACK
+        self.raiz.destroy()
 
     def scrollbox(self):
         def on_item_selected(event):
@@ -40,12 +45,8 @@ class ListRoom:
 
         self.listbox = Listbox(self.frame, bg=kYellow)
         self.listbox.place(relx=0.1, rely=0.2, relwidth=0.8, relheight=0.6)
-        for room in self.controller.rooms:
+        for room in self.rooms:
             self.listbox.insert(END, f"{room.district} {room.price}")
         self.listbox.config(yscrollcommand=self.scrollbar.set)
         self.listbox.bind("<<ListboxSelect>>", on_item_selected)
         self.scrollbar.config(command=self.listbox.yview)
-
-controller = RoomController()
-controller.dao.add(RoomAd(email='a@a.com', district='Canasvieiras', price=2000.0, extra=300.0, images=[], type= 'tipo', roommates=1, rooms=1, bathrooms=1))
-ListRoom(controller)
