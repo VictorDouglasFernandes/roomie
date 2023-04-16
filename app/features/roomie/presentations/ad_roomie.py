@@ -191,5 +191,4 @@ class AdRoomie:
         print(roomie)
         # saída obtida: <app.features.roomie.entities.roomie.Roomie object at 0x000002316DF5C4C0>
 
-
 AdRoomie()
