@@ -48,7 +48,7 @@ class RoomController:
             _list.append('banheiros')
         elif int_try_parse(room.bathrooms) is None:
             _list.append('banheiros inválido')
-        if len(room.images) == 0:
+        if len(room.pictures) == 0:
             _list.append('imagem')
 
         return _list
@@ -127,7 +127,7 @@ class RoomController:
 #     has_gym=False,
 #     has_concierge=False,
 #     has_pool=False,
-#     has_party_room=False,
+#     has_party_hall=False,
 # ))
 # controller.dao.add(RoomAd(
 #     email='b@b.com',
@@ -148,6 +148,6 @@ class RoomController:
 #     has_gym=True,
 #     has_concierge=True,
 #     has_pool=True,
-#     has_party_room=True,
+#     has_party_hall=True,
 # ))
 # controller.show_room_detail_page(controller.rooms[0])

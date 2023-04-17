@@ -109,7 +109,7 @@ class EditRoom:
         self.has_pool_value = StringVar(value=self.get_default_options_value(room.has_pool))
         self.has_pool = DefaultLabelOptionsMenu(self.frame_2, "Piscina?", self.has_pool_value, rely=0.8)
 
-        self.partyRoom_value = StringVar(value=self.get_default_options_value(room.has_party_room))
+        self.partyRoom_value = StringVar(value=self.get_default_options_value(room.has_party_hall))
         self.partyRoom = DefaultLabelOptionsMenu(self.frame_2, "Salão de\nfestas?", self.partyRoom_value, rely=0.9)
 
         self.edit_button = Button(self.base.bottom_frame, text="SALVAR ANÚNCIO", bg=kYellow, fg=kWhite,
@@ -172,7 +172,7 @@ class EditRoom:
             has_gym=self.str_to_bool(self.has_gym_value.get()),
             has_concierge=self.str_to_bool(self.support24h_value.get()),
             has_pool=self.str_to_bool(self.has_pool_value.get()),
-            has_party_room=self.str_to_bool(self.partyRoom_value.get()),
+            has_party_hall=self.str_to_bool(self.partyRoom_value.get()),
         )
 
     def str_to_bool(self, value):

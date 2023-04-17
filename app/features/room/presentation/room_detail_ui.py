@@ -49,4 +49,4 @@ class RoomDetailUI:
 
         self.has_pool = LabelDetail(self.frame_2, "Piscina?", room.has_pool, rely=0.8)
 
-        self.partyRoom = LabelDetail(self.frame_2, "Salão de\nfestas?", room.has_party_room, rely=0.9)
+        self.partyRoom = LabelDetail(self.frame_2, "Salão de\nfestas?", room.has_party_hall, rely=0.9)

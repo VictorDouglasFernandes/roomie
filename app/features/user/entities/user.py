@@ -1,5 +1,6 @@
 class User:
-    def __init__(self, name: str, surname: str, birthday: str, sex: int, cpf: str, cellphone_number: str, email: str, password: str):
+    def __init__(self, name=None, surname=None, birthday=None, sex=None, cpf=None, cellphone_number=None, email=None,
+                 password=None):
         self.__name = None
         self.__surname = None
         self.__birthday = None
@@ -24,6 +25,10 @@ class User:
             self.__email = email
         if isinstance(password, str):
             self.__password = password
+
+    @property
+    def id(self):
+        return self.email
 
     @property
     def name(self) -> str:

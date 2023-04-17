@@ -3,7 +3,7 @@ from app.commons.entities.ad import *
 class RoomAd(Ad):
     def __init__(self, email: str, share_date=None, active=None, rent_money=None, expenses_money=None, pictures=None, district=None, type=None, residents=None,
                  rooms=None, bathrooms=None, has_collateral=None, accept_smoker=None, accept_pets=None, accept_childs=None, private_condominium=None,
-                 has_garage=None, has_gym=None, has_corcierge=None, has_pool=None, has_party_hall=None):
+                 has_garage=None, has_gym=None, has_concierge=None, has_pool=None, has_party_hall=None):
         super().__init__(email, share_date, active)
         self.__rent_money = None
         self.__expenses_money = None
@@ -20,7 +20,7 @@ class RoomAd(Ad):
         self.__private_condominium = None
         self.__has_garage = None
         self.__has_gym = None
-        self.__has_corcierge = None
+        self.__has_concierge = None
         self.__has_pool = None
         self.__has_party_hall = None
         if isinstance(email, str):
@@ -55,8 +55,8 @@ class RoomAd(Ad):
             self.__has_garage = has_garage
         if isinstance(has_gym, bool):
             self.__has_gym = has_gym
-        if isinstance(has_corcierge, bool):
-            self.__has_corcierge = has_corcierge
+        if isinstance(has_concierge, bool):
+            self.__has_corcierge = has_concierge
         if isinstance(has_pool, bool):
             self.__has_pool = has_pool
         if isinstance(has_party_hall, bool):
@@ -74,6 +74,13 @@ class RoomAd(Ad):
     def district(self, district):
         self.__district = district
 
+    @property
+    def type(self):
+        return self.__type
+
+    @type.setter
+    def type(self, type):
+        self.__type = type
 
     @property
     def rent_money(self):
@@ -132,20 +139,20 @@ class RoomAd(Ad):
         self.__accept_smoker = accept_smoker
 
     @property
-    def has_pets(self):
-        return self.__has_pets
+    def accept_pets(self):
+        return self.__accept_pets
 
-    @has_pets.setter
-    def has_pets(self, has_pets):
-        self.__has_pets = has_pets
+    @accept_pets.setter
+    def accept_pets(self, accept_pets):
+        self.__accept_pets = accept_pets
 
     @property
-    def has_childs(self):
-        return self.__has_childs
+    def accept_childs(self):
+        return self.__accept_childs
 
-    @has_childs.setter
-    def has_childs(self, has_childs):
-        self.__has_childs = has_childs
+    @accept_childs.setter
+    def accept_childs(self, accept_childs):
+        self.__accept_childs = accept_childs
 
     @property
     def private_condominium(self):
