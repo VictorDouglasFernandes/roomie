@@ -2,7 +2,7 @@ from tkinter import *
 
 from app.commons.colors.colors import *
 from app.commons.navigation import Navigation
-from app.features.roomie.entities import roomie
+from app.features.roomie.entities.roomie import Roomie
 from app.features.roomie.presentations.roomie_detail_ui import RoomieDetailUI
 
 
@@ -12,10 +12,12 @@ class RoomieDetailPage:
         self.navigation = None
         self.ui = RoomieDetailUI(self.raiz, roomie=roomie)
 
-        self.delete_button = Button(self.ui.base.bottom_frame, text="EXCLUIR ANÚNCIO", bg=kYellow, fg=kWhite, command=self.delete)
+        self.delete_button = Button(self.ui.base.bottom_frame, text="EXCLUIR ANÚNCIO", bg=kYellow, fg=kWhite,
+                                    command=self.delete)
         self.delete_button.place(relx=0, rely=0, relheight=1, relwidth=0.3)
 
-        self.edit_button = Button(self.ui.base.bottom_frame, text="EDITAR ANÚNCIO", bg=kYellow, fg=kWhite, command=self.edit)
+        self.edit_button = Button(self.ui.base.bottom_frame, text="EDITAR ANÚNCIO", bg=kYellow, fg=kWhite,
+                                  command=self.edit)
         self.edit_button.place(relx=0.35, rely=0, relheight=1, relwidth=0.3)
 
         self.back_button = Button(self.ui.base.bottom_frame, text="VOLTAR", bg=kYellow, fg=kWhite, command=self.back)
@@ -34,8 +36,3 @@ class RoomieDetailPage:
     def edit(self):
         self.navigation = Navigation.PUT
         self.raiz.destroy()
-
-#RoomDetailPage(room=RoomAd(email='mail', district='distrito', images=["C:/Users/victo/Pictures/edited/IMG_1529.jpg", "C:/Users/victo/Downloads/20230315_190422.jpg",  "C:/Users/victo/Downloads/20230315_190422.jpg"], children=True, advance=False))
-
-
-

@@ -2,9 +2,21 @@ from app.commons.entities.ad import Ad
 
 
 class Roomie(Ad):
-    def __init__(self, price, share_date, active, roommate_type, living_type, about, is_student=False,
-                 is_smoker=False, has_pets=False, has_children=False, has_job=False):
-        super().__init__(price, share_date, active)
+    def __init__(self, email=None, price=None, share_date=None, active=None, roommate_type=None, living_type=None,
+                 about=None, is_student=False,
+                 is_smoker=False, has_pets=False, has_children=False, has_job=False, picture=None):
+        super().__init__(email, share_date, active)
+        self.__price = None
+        self.__roommate_type = None
+        self.__living_type = None
+        self.__about = None
+        self.__is_student = None
+        self.__is_smoker = None
+        self.__has_pets = None
+        self.__has_children = None
+        self.__has_job = None
+        self.__picture = None
+        self.__price = price
         self.__roommate_type = roommate_type
         self.__living_type = living_type
         self.__about = about
@@ -13,6 +25,15 @@ class Roomie(Ad):
         self.__has_pets = has_pets
         self.__has_children = has_children
         self.__has_job = has_job
+        self.__picture = picture
+
+    @property
+    def price(self):
+        return self.__price
+
+    @price.setter
+    def price(self, price):
+        self.__price = price
 
     @property
     def roommate_type(self):
@@ -77,3 +98,11 @@ class Roomie(Ad):
     @has_job.setter
     def has_job(self, has_job):
         self.__has_job = has_job
+
+    @property
+    def picture(self):
+        return self.__picture
+
+    @picture.setter
+    def picture(self, picture):
+        self.__picture = picture

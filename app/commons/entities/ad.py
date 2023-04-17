@@ -1,16 +1,23 @@
 class Ad:
-    def __init__(self, price, share_date, active=True):
-        self.__price = price
-        self.__share_date = 123  # datetime.date.today() #data de publicação do anúncio, não consegui
-        self.__active = True  # por padrão, mas usuário pode mudar depois
+    def __init__(self, email=None, share_date=None, active=True):
+        self.__email = None
+        self.__share_date = None
+        self.__active = None
+        self.__email = email
+        self.__share_date = share_date
+        self.__active = active
 
     @property
-    def price(self):
-        return self.__price
+    def id(self):
+        return self.email
 
-    @price.setter
-    def price(self, price):
-        self.__price = price
+    @property
+    def email(self):
+        return self.__email
+
+    @email.setter
+    def email(self, email):
+        self.__email = email
 
     @property
     def share_date(self):

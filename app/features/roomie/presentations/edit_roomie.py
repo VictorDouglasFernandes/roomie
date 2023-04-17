@@ -11,14 +11,15 @@ from app.commons.ui.default_label_options_menu import DefaultLabelOptionsMenu
 from app.commons.ui.image_clickable import ImageClickable
 from app.commons.utils.parse import int_try_parse
 from app.features.roomie.entities.roomie import Roomie
-from app.commons.image.path import Path
 from datetime import datetime
+from app.commons.image.path import Path
 
 
-class AdRoomie:
-    def __init__(self, controller=None):
-        self.controller = controller
+class EditRoomie:
+    def __init__(self, controller=None, roomie=None):
         self.raiz = Tk()
+        self.controller = controller
+        self.initial_roomie = roomie
         self.navigation = None
         self.tela()
         self.botoes()
@@ -38,6 +39,7 @@ class AdRoomie:
         self.bt_1.place(relx=0.5, rely=0.2, relwidth=0.35, relheight=0.1)
 
         self.filepath = None
+        self.filepath = self.initial_roomie.picture
         self.image = None
         self.bt_2 = Button(self.frame_1, text="ANUNCIAR", bg='#f4bc44', fg='white', font=('JasmineUPC', 8),
                            command=self.save_ad)
@@ -52,7 +54,7 @@ class AdRoomie:
         self.lb_imagens.place(relx=0.1, rely=0.2, relwidth=0.35)
 
     def slider(self):
-        self.current_value = DoubleVar()
+        self.current_value = DoubleVar(value=self.initial_roomie.price)
         self.slider = Scale(self.frame_1, from_=200, to_=5000, orient='horizontal', highlightthickness=0,
                             variable=self.current_value,
                             command=self.on_change_scale, bg='#f4bc44', fg='white', troughcolor='#f4bc44')
@@ -65,31 +67,31 @@ class AdRoomie:
         print(self.current_value.get())
 
     def dropdown(self):
-        self.living_type = StringVar()
+        self.living_type = StringVar(value=self.get_default_options_value(self.initial_roomie.living_type))
         self.drop = DefaultLabelOptionsMenu(self.frame_1, "*Tipo do\nquarto", self.living_type,
                                             ["Exclusivo", "Compartilhado"], 0.55)
 
-        self.roommate_type = StringVar()
+        self.roommate_type = StringVar(value=self.get_default_options_value(self.initial_roomie.roommate_type))
         self.drop2 = DefaultLabelOptionsMenu(self.frame_1, "*Tipo de \n convivência", self.roommate_type,
                                              ["Ocasional", "Regular", "Intensa"], 0.7)
 
-        self.is_student = StringVar()
+        self.is_student = StringVar(value=self.get_default_options_value(self.initial_roomie.is_student))
         self.drop3 = DefaultLabelOptionsMenu(self.frame_2, "Estudante?", self.is_student, rely=0.2, relheight=0.05,
                                              lrelwidth=0.25)
 
-        self.is_smoker = StringVar()
+        self.is_smoker = StringVar(value=self.get_default_options_value(self.initial_roomie.is_student))
         self.drop4 = DefaultLabelOptionsMenu(self.frame_2, "Fumante?", self.is_smoker, rely=0.3, relheight=0.05,
                                              lrelwidth=0.25)
 
-        self.has_job = StringVar()
+        self.has_job = StringVar(value=self.get_default_options_value(self.initial_roomie.has_job))
         self.drop5 = DefaultLabelOptionsMenu(self.frame_2, "Trabalha?", self.has_job, rely=0.4, relheight=0.05,
                                              lrelwidth=0.25)
 
-        self.has_pets = StringVar()
+        self.has_pets = StringVar(value=self.get_default_options_value(self.initial_roomie.has_pets))
         self.drop6 = DefaultLabelOptionsMenu(self.frame_2, "Possui pet?", self.has_pets, rely=0.5, relheight=0.05,
                                              lrelwidth=0.25)
 
-        self.has_children = StringVar()
+        self.has_children = StringVar(value=self.get_default_options_value(self.initial_roomie.has_children))
         self.drop7 = DefaultLabelOptionsMenu(self.frame_2, "Possui filhos?", self.has_children, rely=0.6,
                                              relheight=0.05,
                                              lrelwidth=0.25)
@@ -98,11 +100,12 @@ class AdRoomie:
         self.lb_entrada = Label(self.frame_2, text="Me conte mais sobre você :)", font=('JasmineUPC', 8), bg='#fff',
                                 fg='#f4bc44')
         self.lb_entrada.place(relx=0.10, rely=0.65)
-        self.about = StringVar()
+        self.about = StringVar(value=self.initial_roomie.about)
         self.entrada = Entry(self.frame_2, bg='#f4bc44', fg='white', textvariable=self.about)
         self.entrada.place(relx=0.1, rely=0.7, relwidth=0.75, relheight=0.15)
 
     def load_image(self):
+        # carregamento da imagem de perfil do usuário. função vinculada ao self.bt_1, da função botoes
         self.filename = filedialog.askopenfilename()
         if self.filename:
             if self.image is not None:
@@ -111,6 +114,12 @@ class AdRoomie:
             self.filepath = os.path.join(Path.IMAGE.value, os.path.basename("name." + self.filename.split(".")[1]))
             cv2.imwrite(self.filepath, self.image)
             self.image = ImageClickable(self.frame_1, self.filepath)
+
+    def get_default_options_value(self, value):
+        if value is True:
+            return "Sim"
+        elif value is False:
+            return "Não"
 
     def str_to_bool(self, value):
         if value == 'Sim':
@@ -125,15 +134,15 @@ class AdRoomie:
         if len(missing) > 0:
             tkinter.messagebox.showwarning(title="Campos Faltando", message='\n'.join(missing))
         else:
-            self.navigation = Navigation.POST
+            self.navigation = Navigation.PUT
             self.raiz.destroy()
 
     def get_ad_roomie(self):
         return Roomie(
             price=int_try_parse(self.current_value.get()),
             share_date=datetime.now(),
-            active=True,
             picture=self.filepath,
+            active=True,
             roommate_type=self.roommate_type.get(),
             living_type=self.living_type.get(),
             about=self.about.get(),
