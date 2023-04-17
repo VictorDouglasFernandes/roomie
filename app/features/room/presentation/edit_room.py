@@ -29,17 +29,17 @@ class EditRoom:
                                                          "Santa Mônica", "Itacorubi", "Saco dos Limões", "Serrinha"],
                                                 rely=0)
 
-        self.rent = LabelEntry(self.frame_1, text="*Valor do\naluguel (mensal)", initial_value=str(room.price),
+        self.rent = LabelEntry(self.frame_1, text="*Valor do\naluguel (mensal)", initial_value=str(room.rent_money),
                                rely=0.1)
 
         self.expenses = LabelEntry(self.frame_1, text="*Valor das\ndespesas mensais\n(água, luz,\ninternet, gás, etc.)",
-                                   initial_value=str(room.extra), rely=0.2)
+                                   initial_value=str(room.expenses_money), rely=0.2)
 
         self.type_value = StringVar(value=room.type)
         self.type = DefaultLabelOptionsMenu(self.frame_1, "*Tipo do\nquarto", self.type_value,
                                             options=["Individual", "Compartilhado"], rely=0.35)
 
-        self.roommates = LabelEntryColumn(self.frame_1, "*N° de moradores\ndo imóvel", str(room.roommates), rely=0.45)
+        self.residents = LabelEntryColumn(self.frame_1, "*N° de moradores\ndo imóvel", str(room.residents), rely=0.45)
 
         self.rooms = LabelEntryColumn(self.frame_1, "*N° de quartos\ndo imóvel", str(room.rooms), rely=0.45, relx=0.33)
 
@@ -47,7 +47,7 @@ class EditRoom:
                                           relx=0.69)
 
         self.images = None
-        self.image_paths = room.images
+        self.image_paths = room.pictures
         if self.image_paths is None:
             self.image_paths = []
         self.create_images()
@@ -82,34 +82,34 @@ class EditRoom:
         self.image = ImageButton(self.frame_1, text="*Envie até 3\nfotos do imóvel", validation=image_add_validation,
                                  on_add=image_add, filename_function=filename_function)
 
-        self.valueBefore_value = StringVar(value=self.get_default_options_value(room.advance))
+        self.valueBefore_value = StringVar(value=self.get_default_options_value(room.has_collateral))
         self.valueBefore = DefaultLabelOptionsMenu(self.frame_2, "Exige\ncaução?", self.valueBefore_value, rely=0)
 
-        self.smoker_value = StringVar(value=self.get_default_options_value(room.smoker))
-        self.smoker = DefaultLabelOptionsMenu(self.frame_2, "Aceita\nfumante?", self.smoker_value, rely=0.1)
+        self.accept_smoker_value = StringVar(value=self.get_default_options_value(room.accept_smoker))
+        self.accept_smoker = DefaultLabelOptionsMenu(self.frame_2, "Aceita\nfumante?", self.accept_smoker_value, rely=0.1)
 
-        self.pet_value = StringVar(value=self.get_default_options_value(room.pets))
+        self.pet_value = StringVar(value=self.get_default_options_value(room.accept_pets))
         self.pet = DefaultLabelOptionsMenu(self.frame_2, "Aceita\npets?", self.pet_value)
 
-        self.children_value = StringVar(value=self.get_default_options_value(room.children))
-        self.children = DefaultLabelOptionsMenu(self.frame_2, "Aceita\ncrianças?", self.children_value, rely=0.3)
+        self.accept_childs_value = StringVar(value=self.get_default_options_value(room.accept_childs))
+        self.accept_childs = DefaultLabelOptionsMenu(self.frame_2, "Aceita\ncrianças?", self.accept_childs_value, rely=0.3)
 
-        self.close_value = StringVar(value=self.get_default_options_value(room.condominium))
+        self.close_value = StringVar(value=self.get_default_options_value(room.private_condominium))
         self.close = DefaultLabelOptionsMenu(self.frame_2, "Condomínio\nfechado?", self.close_value, rely=0.4)
 
-        self.garage_value = StringVar(value=self.get_default_options_value(room.garage))
-        self.garage = DefaultLabelOptionsMenu(self.frame_2, "Vaga para\ngaragem?", self.garage_value, rely=0.5)
+        self.has_garage_value = StringVar(value=self.get_default_options_value(room.has_garage))
+        self.has_garage = DefaultLabelOptionsMenu(self.frame_2, "Vaga para\nhas_garagem?", self.has_garage_value, rely=0.5)
 
-        self.gym_value = StringVar(value=self.get_default_options_value(room.gym))
-        self.gym = DefaultLabelOptionsMenu(self.frame_2, "Academia?", self.gym_value, rely=0.6)
+        self.has_gym_value = StringVar(value=self.get_default_options_value(room.has_gym))
+        self.has_gym = DefaultLabelOptionsMenu(self.frame_2, "Academia?", self.has_gym_value, rely=0.6)
 
-        self.support24h_value = StringVar(value=self.get_default_options_value(room.lobby))
+        self.support24h_value = StringVar(value=self.get_default_options_value(room.has_concierge))
         self.support24h = DefaultLabelOptionsMenu(self.frame_2, "Portaria 24\nhoras?", self.support24h_value, rely=0.7)
 
-        self.pool_value = StringVar(value=self.get_default_options_value(room.pool))
-        self.pool = DefaultLabelOptionsMenu(self.frame_2, "Piscina?", self.pool_value, rely=0.8)
+        self.has_pool_value = StringVar(value=self.get_default_options_value(room.has_pool))
+        self.has_pool = DefaultLabelOptionsMenu(self.frame_2, "Piscina?", self.has_pool_value, rely=0.8)
 
-        self.partyRoom_value = StringVar(value=self.get_default_options_value(room.party_room))
+        self.partyRoom_value = StringVar(value=self.get_default_options_value(room.has_party_room))
         self.partyRoom = DefaultLabelOptionsMenu(self.frame_2, "Salão de\nfestas?", self.partyRoom_value, rely=0.9)
 
         self.edit_button = Button(self.base.bottom_frame, text="SALVAR ANÚNCIO", bg=kYellow, fg=kWhite,
@@ -155,24 +155,24 @@ class EditRoom:
     def get_room_ad(self):
         return RoomAd(
             email='teste',
-            price=float_try_parse(self.rent.entry.get()),
-            extra=float_try_parse(self.expenses.entry.get()),
-            images=self.image_paths,
+            rent_money=float_try_parse(self.rent.entry.get()),
+            expenses_money=float_try_parse(self.expenses.entry.get()),
+            pictures=self.image_paths,
             district=self.district_value.get(),
             type=self.type_value.get(),
-            roommates=int_try_parse(self.roommates.entry.get()),
+            residents=int_try_parse(self.residents.entry.get()),
             rooms=int_try_parse(self.rooms.entry.get()),
             bathrooms=int_try_parse(self.bathrooms.entry.get()),
-            advance=self.str_to_bool(self.valueBefore_value.get()),
-            smoker=self.str_to_bool(self.smoker_value.get()),
-            pets=self.str_to_bool(self.pet_value.get()),
-            children=self.str_to_bool(self.children_value.get()),
-            condominium=self.str_to_bool(self.close_value.get()),
-            garage=self.str_to_bool(self.garage_value.get()),
-            gym=self.str_to_bool(self.gym_value.get()),
-            lobby=self.str_to_bool(self.support24h_value.get()),
-            pool=self.str_to_bool(self.pool_value.get()),
-            party_room=self.str_to_bool(self.partyRoom_value.get()),
+            has_collateral=self.str_to_bool(self.valueBefore_value.get()),
+            accept_smoker=self.str_to_bool(self.accept_smoker_value.get()),
+            accept_pets=self.str_to_bool(self.pet_value.get()),
+            accept_childs=self.str_to_bool(self.accept_childs_value.get()),
+            private_condominium=self.str_to_bool(self.close_value.get()),
+            has_garage=self.str_to_bool(self.has_garage_value.get()),
+            has_gym=self.str_to_bool(self.has_gym_value.get()),
+            has_concierge=self.str_to_bool(self.support24h_value.get()),
+            has_pool=self.str_to_bool(self.has_pool_value.get()),
+            has_party_room=self.str_to_bool(self.partyRoom_value.get()),
         )
 
     def str_to_bool(self, value):
@@ -181,4 +181,4 @@ class EditRoom:
         elif value == 'Não':
             return False
 
-# EditRoom(RoomAd(email='mail', district='distrito', roommates=1, images=["C:/Users/victo/Pictures/edited/IMG_1529.jpg", "C:/Users/victo/Downloads/20230315_190422.jpg",  "C:/Users/victo/Downloads/20230315_190422.jpg"], children=True, advance=False))
+# EditRoom(RoomAd(email='mail', district='distrito', residents=1, images=["C:/Users/victo/Pictures/edited/IMG_1529.jpg", "C:/Users/victo/Downloads/20230315_190422.jpg",  "C:/Users/victo/Downloads/20230315_190422.jpg"], accept_childs=True, has_collateral=False))

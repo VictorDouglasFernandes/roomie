@@ -26,19 +26,19 @@ class RoomController:
         _list = []
         if room.district is None or len(room.district) == 0:
             _list.append('bairro')
-        if room.price is None:
+        if room.rent_money is None:
             _list.append('aluguel')
-        elif float_try_parse(room.price) is None:
+        elif float_try_parse(room.rent_money) is None:
             _list.append('aluguel inválido')
-        if room.extra is None:
+        if room.expenses_money is None:
             _list.append('despesas')
-        elif float_try_parse(room.extra) is None:
+        elif float_try_parse(room.expenses_money) is None:
             _list.append('despesas inválido')
         if room.type is None or len(room.type) == 0:
             _list.append('tipo')
-        if room.roommates is None:
+        if room.residents is None:
             _list.append('moradores')
-        elif int_try_parse(room.roommates) is None:
+        elif int_try_parse(room.residents) is None:
             _list.append('moradores inválido')
         if room.rooms is None:
             _list.append('quartos')
@@ -110,44 +110,44 @@ class RoomController:
 # controller.show_list_room()
 # controller.dao.add(RoomAd(
 #     email='a@a.com',
-#     price=123.0,
-#     extra=234.0,
+#     rent_money=123.0,
+#     expenses_money=234.0,
 #     images=["C:/Users/victo/PycharmProjects/roomie/app/commons/image/name.jpg"],
 #     district="Trindade",
 #     type=None,
-#     roommates=2,
+#     residents=2,
 #     rooms=3,
 #     bathrooms=4,
-#     advance=True,
-#     smoker=True,
+#     has_collateral=True,
+#     accept_smoker=True,
 #     pets=True,
-#     children=True,
-#     condominium=False,
-#     garage=False,
-#     gym=False,
-#     lobby=False,
-#     pool=False,
-#     party_room=False,
+#     accept_childs=True,
+#     private_condominium=False,
+#     has_garage=False,
+#     has_gym=False,
+#     has_concierge=False,
+#     has_pool=False,
+#     has_party_room=False,
 # ))
 # controller.dao.add(RoomAd(
 #     email='b@b.com',
-#     price=345.0,
-#     extra=456.0,
+#     rent_money=345.0,
+#     expenses_money=456.0,
 #     images=[],
 #     district='Trindade',
 #     type=None,
-#     roommates=3,
+#     residents=3,
 #     rooms=4,
 #     bathrooms=5,
-#     advance=False,
-#     smoker=False,
+#     has_collateral=False,
+#     accept_smoker=False,
 #     pets=False,
-#     children=False,
-#     condominium=True,
-#     garage=True,
-#     gym=True,
-#     lobby=True,
-#     pool=True,
-#     party_room=True,
+#     accept_childs=False,
+#     private_condominium=True,
+#     has_garage=True,
+#     has_gym=True,
+#     has_concierge=True,
+#     has_pool=True,
+#     has_party_room=True,
 # ))
 # controller.show_room_detail_page(controller.rooms[0])

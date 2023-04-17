@@ -46,7 +46,7 @@ class ListRoom:
         self.listbox = Listbox(self.frame, bg=kYellow)
         self.listbox.place(relx=0.1, rely=0.2, relwidth=0.8, relheight=0.6)
         for room in self.rooms:
-            self.listbox.insert(END, f"{room.district} {room.price}")
+            self.listbox.insert(END, f"{room.district} {room.rent_money}")
         self.listbox.config(yscrollcommand=self.scrollbar.set)
         self.listbox.bind("<<ListboxSelect>>", on_item_selected)
         self.scrollbar.config(command=self.listbox.yview)
