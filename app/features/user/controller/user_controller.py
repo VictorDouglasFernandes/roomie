@@ -1,6 +1,8 @@
 import tkinter
 
 from app.commons.navigation import Navigation
+from app.features.room.controller import room_controller
+from app.features.roomie.controller import roomie_controller
 from app.features.user.entities.user import User
 from app.features.user.presentation.create_ads import CreateAds
 from app.features.user.presentation.logged_in_home_page import LoggedInHomePage
@@ -14,6 +16,8 @@ class UserController:
     def __init__(self):
         self.dao = UserDB()
         self.user = None
+        self.room_controller = room_controller.RoomController(self)
+        self.roomie_controller = roomie_controller.RoomieController(self)
 
     @property
     def users(self):
@@ -64,9 +68,13 @@ class UserController:
     def show_create_ads(self):
         page = CreateAds()
         if page.navigation == Navigation.ROOM:
-            pass
+            navigation = self.room_controller.show_add_room()
+            if navigation is not None:
+                self.show_logged_in_home_page()
         elif page.navigation == Navigation.ROOMIE:
-            pass
+            navigation = self.roomie_controller.show_ad_roomie()
+            if navigation is not None:
+                self.show_logged_in_home_page()
         elif page.navigation == Navigation.GET:
             self.show_user_profile()
         elif page.navigation == Navigation.BACK:
@@ -86,11 +94,13 @@ class UserController:
         if page.navigation == Navigation.GET:
             self.show_user_profile()
         elif page.navigation == Navigation.ROOMIE:
-            pass
-            # Lista de Colegas
+            navigation = self.roomie_controller.show_list_roomie()
+            if navigation is not None:
+                self.show_search_ads()
         elif page.navigation == Navigation.ROOM:
-            pass
-            # Lista de Quartos
+            navigation = self.room_controller.show_list_room()
+            if navigation is not None:
+                self.show_search_ads()
         elif page.navigation == Navigation.BACK:
             self.show_logged_in_home_page()
 

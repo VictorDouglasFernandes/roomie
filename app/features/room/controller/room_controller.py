@@ -10,12 +10,17 @@ from app.features.room.repository.room_db import RoomDB
 
 
 class RoomController:
-    def __init__(self):
+    def __init__(self, user_controller=None):
         self.dao = RoomDB()
+        self.user_controller = user_controller
 
     @property
     def rooms(self):
         return list(self.dao.get_all())
+
+    @property
+    def user(self):
+        return self.user_controller.user
 
     def ad_room_verification(self, room: RoomAd):
         _list = []
@@ -49,6 +54,7 @@ class RoomController:
         return _list
 
     def add_ad_room(self, room: RoomAd):
+        room.email = self.user.email
         self.dao.add(room)
         # Adicionar ao usuário
 
@@ -61,17 +67,15 @@ class RoomController:
         # Remover do usuário
 
     def show_add_room(self):
-        page = AddRoom(self)
+        page = AddRoom(self, self.user.email)
         if page.navigation == Navigation.PUT:
             self.add_ad_room(page.room)
-            # Enviar para tela de seleção de que anúncio gerar
+            return page.navigation
         elif page.navigation == Navigation.BACK:
-            pass
-            # Enviar para tela de seleção de que anúncio gerar
-            # self.
+            return page.navigation
 
     def show_edit_room(self, room):
-        page = EditRoom(self, room)
+        page = EditRoom(self, room, self.user.email)
         if page.navigation == Navigation.PUT:
             self.update_ad_room(page.room)
             # Ajustar para atualizar do usuário
@@ -85,9 +89,7 @@ class RoomController:
             room = self.rooms[page.selected_id]
             self.show_room_ad_page(room)
         elif page.navigation == Navigation.BACK:
-            pass
-            # Enviar para tela de seleção do tipo de anuncio para pesquisar
-            # self.
+            return page.navigation
 
     def show_room_ad_page(self, room):
         page = RoomAdPage(room)
@@ -104,48 +106,48 @@ class RoomController:
             pass
             # Enviar para tela de seleção de que anúncio visualizar
 
-controller = RoomController()
-controller.show_list_room()
-controller.dao.add(RoomAd(
-    email='a@a.com',
-    price=123.0,
-    extra=234.0,
-    images=["C:/Users/victo/PycharmProjects/roomie/app/commons/image/name.jpg"],
-    district="Trindade",
-    type=None,
-    roommates=2,
-    rooms=3,
-    bathrooms=4,
-    advance=True,
-    smoker=True,
-    pets=True,
-    children=True,
-    condominium=False,
-    garage=False,
-    gym=False,
-    lobby=False,
-    pool=False,
-    party_room=False,
-))
-controller.dao.add(RoomAd(
-    email='b@b.com',
-    price=345.0,
-    extra=456.0,
-    images=[],
-    district='Trindade',
-    type=None,
-    roommates=3,
-    rooms=4,
-    bathrooms=5,
-    advance=False,
-    smoker=False,
-    pets=False,
-    children=False,
-    condominium=True,
-    garage=True,
-    gym=True,
-    lobby=True,
-    pool=True,
-    party_room=True,
-))
-controller.show_room_detail_page(controller.rooms[0])
+# controller = RoomController()
+# controller.show_list_room()
+# controller.dao.add(RoomAd(
+#     email='a@a.com',
+#     price=123.0,
+#     extra=234.0,
+#     images=["C:/Users/victo/PycharmProjects/roomie/app/commons/image/name.jpg"],
+#     district="Trindade",
+#     type=None,
+#     roommates=2,
+#     rooms=3,
+#     bathrooms=4,
+#     advance=True,
+#     smoker=True,
+#     pets=True,
+#     children=True,
+#     condominium=False,
+#     garage=False,
+#     gym=False,
+#     lobby=False,
+#     pool=False,
+#     party_room=False,
+# ))
+# controller.dao.add(RoomAd(
+#     email='b@b.com',
+#     price=345.0,
+#     extra=456.0,
+#     images=[],
+#     district='Trindade',
+#     type=None,
+#     roommates=3,
+#     rooms=4,
+#     bathrooms=5,
+#     advance=False,
+#     smoker=False,
+#     pets=False,
+#     children=False,
+#     condominium=True,
+#     garage=True,
+#     gym=True,
+#     lobby=True,
+#     pool=True,
+#     party_room=True,
+# ))
+# controller.show_room_detail_page(controller.rooms[0])

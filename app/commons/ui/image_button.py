@@ -3,14 +3,15 @@ import cv2
 from tkinter import *
 from fileinput import filename
 from tkinter import filedialog
-from app.commons.image.path import Path
+from app.commons.image.path import *
 
 from app.commons.colors.colors import *
 from app.commons.fonts.fonts import jasmineUPC8
 
 
 class ImageButton:
-    def __init__(self, master=None, text="- - -", rely=0.9, validation=None, on_add=None):
+    def __init__(self, master=None, text="- - -", rely=0.9, validation=None, on_add=None, filename_function=None):
+        self.filename_function = filename_function
         self.validation = validation
         self.on_add = on_add
 
@@ -28,7 +29,7 @@ class ImageButton:
         if self.filename:
             image = cv2.imread(self.filename)
             # Ajustar nome
-            self.filepath = os.path.join(Path.IMAGE.value, os.path.basename("name." + self.filename.split(".")[1]))
+            self.filepath = self.filename_function(self.filename)
             cv2.imwrite(self.filepath, image)
             print(self.filepath)
             if self.on_add != None:

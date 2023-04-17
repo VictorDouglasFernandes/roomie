@@ -11,10 +11,11 @@ from app.commons.ui.label_entry_column import LabelEntryColumn
 from app.commons.ui.triple_image_row import TripleImageRow
 from app.commons.utils.parse import float_try_parse, int_try_parse
 from app.features.room.entities.room_ad import RoomAd
+from app.commons.image.path import *
 
 
 class EditRoom:
-    def __init__(self, controller, room=None):
+    def __init__(self, controller, room=None, email=None):
         self.raiz = Tk()
         self.controller = controller
         self.navigation = None
@@ -59,8 +60,27 @@ class EditRoom:
                 self.image_paths.append(image_path)
                 self.create_images()
 
+        def filename_function(filename):
+            addition = "ROOM1."
+            base = base_image_name(email)
+            if not has_image("ROOM1"):
+                addition = "ROOM1."
+            elif not has_image("ROOM2"):
+                addition = "ROOM2."
+            elif not has_image("ROOM3"):
+                addition = "ROOM3."
+            path = Path.IMAGE.value + base + addition + filename.split(".")[1]
+            return path
+
+        def has_image(value):
+            has = False
+            for image_path in self.image_paths:
+                if value in image_path:
+                    has = True
+            return has
+
         self.image = ImageButton(self.frame_1, text="*Envie até 3\nfotos do imóvel", validation=image_add_validation,
-                                 on_add=image_add)
+                                 on_add=image_add, filename_function=filename_function)
 
         self.valueBefore_value = StringVar(value=self.get_default_options_value(room.advance))
         self.valueBefore = DefaultLabelOptionsMenu(self.frame_2, "Exige\ncaução?", self.valueBefore_value, rely=0)
