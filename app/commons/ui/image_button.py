@@ -1,14 +1,18 @@
+import os
+import cv2
 from tkinter import *
 from fileinput import filename
 from tkinter import filedialog
+from app.commons.image.path import Path
 
 from app.commons.colors.colors import *
 from app.commons.fonts.fonts import jasmineUPC8
 
 
 class ImageButton:
-    def __init__(self, master=None, text="- - -", rely=0.9, validation=None):
+    def __init__(self, master=None, text="- - -", rely=0.9, validation=None, on_add=None):
         self.validation = validation
+        self.on_add = on_add
 
         self.label = Label(master, text=text, font=jasmineUPC8, bg=kWhite, fg=kYellow)
         self.label.place(relx=0, rely=rely, relheight=0.1, relwidth=0.4)
@@ -22,4 +26,10 @@ class ImageButton:
                 return
         self.filename = filedialog.askopenfilename()
         if self.filename:
-            self.image = PhotoImage(file=filename)
+            image = cv2.imread(self.filename)
+            # Ajustar nome
+            self.filepath = os.path.join(Path.IMAGE.value, os.path.basename("name." + self.filename.split(".")[1]))
+            cv2.imwrite(self.filepath, image)
+            print(self.filepath)
+            if self.on_add != None:
+                self.on_add(self.filepath)

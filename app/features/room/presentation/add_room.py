@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter
+import cv2
 
 from app.commons.colors.colors import kYellow, kWhite
 from app.commons.navigation import Navigation
@@ -8,6 +9,8 @@ from app.commons.ui.default_label_options_menu import DefaultLabelOptionsMenu
 from app.commons.ui.image_button import ImageButton
 from app.commons.ui.label_entry import LabelEntry
 from app.commons.ui.label_entry_column import LabelEntryColumn
+from app.commons.ui.triple_image_row import TripleImageRow
+from app.commons.utils.parse import *
 from app.features.room.entities.room_ad import RoomAd
 
 
@@ -21,7 +24,10 @@ class AddRoom:
         self.frame_2 = self.base.frame_2
 
         self.district_value = StringVar()
-        self.district = DefaultLabelOptionsMenu(self.frame_1, "*Bairro", self.district_value, rely=0)
+        self.district = DefaultLabelOptionsMenu(self.frame_1, "*Bairro", self.district_value,
+                                                options=["Trindade", "Carvoeira", "Pantanal", "Córrego Grande",
+                                                         "Santa Mônica", "Itacorubi", "Saco dos Limões", "Serrinha"],
+                                                rely=0)
 
         self.rent = LabelEntry(self.frame_1, text="*Valor do\naluguel (mensal)", rely=0.1)
 
@@ -29,7 +35,8 @@ class AddRoom:
                                    rely=0.2)
 
         self.type_value = StringVar()
-        self.type = DefaultLabelOptionsMenu(self.frame_1, "*Tipo do\nquarto", self.type_value, rely=0.35)
+        self.type = DefaultLabelOptionsMenu(self.frame_1, "*Tipo do\nquarto", self.type_value,
+                                            options=["Individual", "Compartilhado"], rely=0.35)
 
         self.roommates = LabelEntryColumn(self.frame_1, "*N° de moradores\ndo imóvel", rely=0.45)
 
@@ -37,7 +44,20 @@ class AddRoom:
 
         self.bathrooms = LabelEntryColumn(self.frame_1, "*N° de banheiros\ndo imóvel", rely=0.45, relx=0.69)
 
-        self.image = ImageButton(self.frame_1, text="*Envie até 3\nfotos do imóvel")
+        self.images = None
+        self.image_paths = []
+        self.create_images()
+
+        def image_add_validation():
+            return len(self.image_paths) < 4
+
+        def image_add(image_path):
+            if isinstance(image_path, str):
+                self.image_paths.append(image_path)
+                self.create_images()
+
+        self.image = ImageButton(self.frame_1, text="*Envie até 3\nfotos do imóvel", validation=image_add_validation,
+                                 on_add=image_add)
 
         self.valueBefore_value = StringVar()
         self.valueBefore = DefaultLabelOptionsMenu(self.frame_2, "Exige\ncaução?", self.valueBefore_value, rely=0)
@@ -78,8 +98,16 @@ class AddRoom:
 
         self.raiz.mainloop()
 
-    def verify_potal_code(self):
-        print(self.postalCode.entry.get())
+    def create_images(self):
+        def delete_image(image_path):
+            print(image_path)
+            self.image_paths.remove(image_path)
+            self.create_images()
+
+        if self.images is not None:
+            self.images.hide()
+            self.images = None
+        self.images = TripleImageRow(self.frame_1, images=self.image_paths, rely=0.6, on_tap=delete_image)
 
     def save(self):
         self.room = self.get_room_ad()
@@ -98,14 +126,14 @@ class AddRoom:
     def get_room_ad(self):
         return RoomAd(
             email='teste',
-            price=self.rent.entry.get(),
-            extra=self.expenses.entry.get(),
-            # images = self.,
+            price=float_try_parse(self.rent.entry.get()),
+            extra=float_try_parse(self.expenses.entry.get()),
+            images=self.image_paths,
             district=self.district_value.get(),
             type=self.type_value.get(),
-            roommates=self.roommates.entry.get(),
-            rooms=self.rooms.entry.get(),
-            bathrooms=self.bathrooms.entry.get(),
+            roommates=int_try_parse(self.roommates.entry.get()),
+            rooms=int_try_parse(self.rooms.entry.get()),
+            bathrooms=int_try_parse(self.bathrooms.entry.get()),
             advance=self.str_to_bool(self.valueBefore_value.get()),
             smoker=self.str_to_bool(self.smoker_value.get()),
             pets=self.str_to_bool(self.pet_value.get()),

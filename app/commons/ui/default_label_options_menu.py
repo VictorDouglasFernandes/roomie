@@ -19,3 +19,7 @@ class DefaultLabelOptionsMenu:
         self.menu.place(relx=0.5, rely=rely, relwidth=0.35, relheight=relheight)
         self.label = Label(master, text=text, font=jasmineUPC8, bg=kWhite, fg=kYellow)
         self.label.place(relx=0.1, rely=rely, relwidth=lrelwidth)
+
+    def hide(self):
+        self.menu.place_forget()
+        self.label.place_forget()

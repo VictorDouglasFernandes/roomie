@@ -1,9 +1,11 @@
 from app.commons.navigation import Navigation
+from app.commons.utils.parse import *
 from app.features.room.entities.room_ad import RoomAd
 from app.features.room.presentation.add_room import AddRoom
 from app.features.room.presentation.edit_room import EditRoom
 from app.features.room.presentation.list_room import ListRoom
 from app.features.room.presentation.room_ad_page import RoomAdPage
+from app.features.room.presentation.room_detail_page import RoomDetailPage
 from app.features.room.repository.room_db import RoomDB
 
 
@@ -19,18 +21,30 @@ class RoomController:
         _list = []
         if room.district is None or len(room.district) == 0:
             _list.append('bairro')
-        if room.price is None :
+        if room.price is None:
             _list.append('aluguel')
+        elif float_try_parse(room.price) is None:
+            _list.append('aluguel inválido')
         if room.extra is None:
             _list.append('despesas')
+        elif float_try_parse(room.extra) is None:
+            _list.append('despesas inválido')
         if room.type is None or len(room.type) == 0:
             _list.append('tipo')
         if room.roommates is None:
             _list.append('moradores')
+        elif int_try_parse(room.roommates) is None:
+            _list.append('moradores inválido')
         if room.rooms is None:
             _list.append('quartos')
+        elif int_try_parse(room.rooms) is None:
+            _list.append('quartos inválido')
         if room.bathrooms is None:
             _list.append('banheiros')
+        elif int_try_parse(room.bathrooms) is None:
+            _list.append('banheiros inválido')
+        if len(room.images) == 0:
+            _list.append('imagem')
 
         return _list
 
@@ -56,16 +70,14 @@ class RoomController:
             # Enviar para tela de seleção de que anúncio gerar
             # self.
 
-    def show_edit_room(self):
-        room = self.rooms[2] # Ajustar para pegar do usuário
+    def show_edit_room(self, room):
         page = EditRoom(self, room)
         if page.navigation == Navigation.PUT:
             self.update_ad_room(page.room)
             # Ajustar para atualizar do usuário
-            # self.show_room_detail_page(self)
+            self.show_room_detail_page(page.room)
         elif page.navigation == Navigation.BACK:
-            pass
-            # self.show_room_detail_page(self)
+            self.show_room_detail_page(room)
 
     def show_list_room(self):
         page = ListRoom(self.rooms)
@@ -82,13 +94,24 @@ class RoomController:
         if page.navigation == Navigation.BACK:
             self.show_list_room()
 
+    def show_room_detail_page(self, room):
+        page = RoomDetailPage(room)
+        if page.navigation == Navigation.PUT:
+            self.show_edit_room(room)
+        elif page.navigation == Navigation.BACK or page.navigation == Navigation.DELETE:
+            if page.navigation == Navigation.DELETE:
+                self.delete_ad_room(room)
+            pass
+            # Enviar para tela de seleção de que anúncio visualizar
+
 controller = RoomController()
+controller.show_list_room()
 controller.dao.add(RoomAd(
     email='a@a.com',
     price=123.0,
     extra=234.0,
-    images=[],
-    district='Canasvieiras',
+    images=["C:/Users/victo/PycharmProjects/roomie/app/commons/image/name.jpg"],
+    district="Trindade",
     type=None,
     roommates=2,
     rooms=3,
@@ -125,4 +148,4 @@ controller.dao.add(RoomAd(
     pool=True,
     party_room=True,
 ))
-controller.show_add_room()
+controller.show_room_detail_page(controller.rooms[0])
