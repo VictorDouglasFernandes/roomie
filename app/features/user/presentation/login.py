@@ -1,12 +1,14 @@
 import tkinter.messagebox
+
+from app.commons.navigation import Navigation
 from app.commons.ui.default_frame import *
-from app.features.user.controller.user_controller import UserController
 
 
 class Login:
     def __init__(self, controller):
         self.__controller = controller
         self.raiz = Tk()
+        self.navigation = None
         self.tela()
         self.entrada()
         self.botoes()
@@ -16,7 +18,9 @@ class Login:
         user_email = self.entrada_email.get()
         user_password = self.entrada_password.get()
         if user_email and user_password:
-            self.__controller.verify_login({"user_email": user_email, "user_password": user_password})
+            if self.__controller.verify_login({"user_email": user_email, "user_password": user_password}):
+                self.navigation = Navigation.GET
+                self.raiz.destroy()
         else:
             tkinter.messagebox.showwarning(title="Erro", message="Por favor, preencha os campos obrigatórios.")
 
@@ -50,6 +54,3 @@ class Login:
 
     def showMessageError(self, title, message):
         tkinter.messagebox.showwarning(title=title, message=message)
-
-
-Login(UserController())

@@ -7,3 +7,8 @@ class Navigation(Enum):
     POST = "POST"
     PUT = "PUT"
     BACK = "BACK"
+    AD = "AD"
+    LIST = "LIST"
+    ROOM = "ROOM"
+    ROOMIE = "ROOMIE"
+

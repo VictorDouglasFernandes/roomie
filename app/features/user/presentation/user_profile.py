@@ -1,8 +1,10 @@
+from app.commons.navigation import Navigation
 from app.commons.ui.default_frame import *
 
 class UserProfile:
     def __init__(self):
         self.raiz = Tk()
+        self.navigation = None
         self.tela()
         self.botoes()
         self.raiz.mainloop()
@@ -14,11 +16,11 @@ class UserProfile:
 
     def botoes(self):
         self.bt_minha_conta = Button(self.frame_1, text="MINHA CONTA", fg='white', bg='#f4bc44',
-                                        font=('JasmineUPC', 10))
+                                        font=('JasmineUPC', 10), command=self.my_account)
         self.bt_minha_conta.place(relx=0.26, rely=0.15, relwidth=0.35, relheight=0.10)
 
         self.bt_meus_anuncios = Button(self.frame_1, text="MINHA ANÚNCIOS", fg='white', bg='#f4bc44',
-                                     font=('JasmineUPC', 10))
+                                     font=('JasmineUPC', 10), command=self.ads)
         self.bt_meus_anuncios.place(relx=0.26, rely=0.30, relwidth=0.35, relheight=0.10)
 
         self.bt_meus_favoritos = Button(self.frame_1, text="MINHA FAVORITOS", fg='white', bg='#f4bc44',
@@ -30,8 +32,19 @@ class UserProfile:
         self.bt_interessados.place(relx=0.26, rely=0.60, relwidth=0.35, relheight=0.10)
 
         self.bt_voltar = Button(self.frame_1, text="VOLTAR", fg='white', bg='#f4bc44',
-                                      font=('JasmineUPC', 10))
+                                      font=('JasmineUPC', 10), command=self.back)
         self.bt_voltar.place(relx=0.28, rely=0.90, relwidth=0.30, relheight=0.10)
 
+    def my_account(self):
+        self.navigation = Navigation.GET
+        self.raiz.destroy()
 
-UserProfile()
+    def ads(self):
+        self.navigation = Navigation.AD
+        self.raiz.destroy()
+
+    def back(self):
+        self.navigation = Navigation.BACK
+        self.raiz.destroy()
+
+#UserProfile()
