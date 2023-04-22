@@ -106,5 +106,6 @@ class UserController:
 
 
 controller = UserController()
-controller.dao.add(User(email="victor@gmail.com", password="135"))
+controller.dao.add(User(name="victor", surname="douglas", birthday="01/01/2000", sex="MALE", cpf="8888888888",
+                        cellphone_number="48 999999999", email="victor@gmail.com", password="135"))
 controller.show_login()
