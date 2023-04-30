@@ -50,5 +50,3 @@ class UserAds:
     def back(self):
         self.navigation = Navigation.BACK
         self.raiz.destroy()
-
-UserAds()

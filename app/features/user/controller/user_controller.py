@@ -8,6 +8,7 @@ from app.features.user.presentation.create_ads import CreateAds
 from app.features.user.presentation.logged_in_home_page import LoggedInHomePage
 from app.features.user.presentation.login import Login
 from app.features.user.presentation.search_ads import SearchAds
+from app.features.user.presentation.user_ads import UserAds
 from app.features.user.presentation.user_profile import UserProfile
 from app.features.user.repository.user_db import UserDB
 
@@ -62,6 +63,8 @@ class UserController:
             self.show_create_ads()
         elif page.navigation == Navigation.LIST:
             self.show_search_ads()
+        elif page.navigation == Navigation.GET:
+            self.show_user_profile()
         elif page.navigation == Navigation.BACK:
             self.show_login()
 
@@ -83,7 +86,7 @@ class UserController:
     def show_user_profile(self):
         page = UserProfile()
         if page.navigation == Navigation.AD:
-            pass
+            self.show_user_ads()
         elif page.navigation == Navigation.GET:
             pass
         elif page.navigation == Navigation.BACK:
@@ -104,7 +107,14 @@ class UserController:
         elif page.navigation == Navigation.BACK:
             self.show_logged_in_home_page()
 
+    def show_user_ads(self):
+        page = UserAds()
+        if page.navigation == Navigation.GET:
+            pass
+        elif page.navigation == Navigation.BACK:
+            self.show_user_profile()
 
 controller = UserController()
 controller.dao.add(User(email="victor@gmail.com", password="135"))
+controller.dao.add(User(email="gabriel@hotmail.com", password="12345"))
 controller.show_login()

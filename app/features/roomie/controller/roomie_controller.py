@@ -59,14 +59,14 @@ class RoomieController:
         page = ListRoomie(self.roomies)
         if page.navigation == Navigation.GET:
             roomie = self.roomies[page.selected_id]
-            self.show_roomie_ad_page(roomie)
+            return self.show_roomie_ad_page(roomie)
         elif page.navigation == Navigation.BACK:
             return page.navigation
 
     def show_roomie_ad_page(self, roomie):
         page = RoomieAdPage(roomie)
         if page.navigation == Navigation.BACK:
-            self.show_list_roomie()
+            return self.show_list_roomie()
 
     def show_roomie_detail_page(self, roomie):
         page = RoomieDetailPage()
