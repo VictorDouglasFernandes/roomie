@@ -1,6 +1,6 @@
 from app.commons.navigation import Navigation
 from app.commons.utils.parse import *
-from app.features.room.entities.room_ad import RoomAd
+from app.features.room.entities.property_ad import PropertyAd
 from app.features.room.presentation.add_room import AddRoom
 from app.features.room.presentation.edit_room import EditRoom
 from app.features.room.presentation.list_room import ListRoom
@@ -54,7 +54,7 @@ class RoomController:
         return _list
 
     def add_ad_room(self, values, update=None):
-        room = RoomAd(
+        room = PropertyAd(
             email=self.user.email,
             rent_money=values["rent_money"],
             expenses_money=values["expenses_money"],
@@ -87,7 +87,7 @@ class RoomController:
         self.add_ad_room(room, update=True)
         # Atualizar do usuário
 
-    def delete_ad_room(self, room: RoomAd):
+    def delete_ad_room(self, room: PropertyAd):
         self.dao.remove(room.id)
         # Remover do usuário
 

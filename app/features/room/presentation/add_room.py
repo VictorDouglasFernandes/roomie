@@ -11,7 +11,7 @@ from app.commons.ui.label_entry import LabelEntry
 from app.commons.ui.label_entry_column import LabelEntryColumn
 from app.commons.ui.triple_image_row import TripleImageRow
 from app.commons.utils.parse import *
-from app.features.room.entities.room_ad import RoomAd
+from app.features.room.entities.property_ad import PropertyAd
 from app.commons.image.path import *
 
 

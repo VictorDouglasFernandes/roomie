@@ -1,5 +1,5 @@
 from app.commons.database.db_helper import DBHelper
-from app.features.room.entities.room_ad import RoomAd
+from app.features.room.entities.property_ad import PropertyAd
 
 
 class RoomDB(DBHelper):
@@ -13,8 +13,8 @@ class RoomDB(DBHelper):
             cls.__instance = super().__new__(cls)
         return cls.__instance
 
-    def add(self, room: RoomAd):
-        if isinstance(room, RoomAd) and (room.id, str):
+    def add(self, room: PropertyAd):
+        if isinstance(room, PropertyAd) and (room.id, str):
             super().add(room.id, room)
 
     def get(self, key: str):

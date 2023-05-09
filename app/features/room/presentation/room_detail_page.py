@@ -2,7 +2,6 @@ from tkinter import *
 
 from app.commons.colors.colors import *
 from app.commons.navigation import Navigation
-from app.features.room.entities.room_ad import RoomAd
 from app.features.room.presentation.room_detail_ui import RoomDetailUI
 
 
@@ -34,5 +33,3 @@ class RoomDetailPage:
     def edit(self):
         self.navigation = Navigation.PUT
         self.raiz.destroy()
-
-#RoomDetailPage(room=RoomAd(email='mail', district='distrito', images=["C:/Users/victo/Pictures/edited/IMG_1529.jpg", "C:/Users/victo/Downloads/20230315_190422.jpg",  "C:/Users/victo/Downloads/20230315_190422.jpg"], children=True, advance=False))

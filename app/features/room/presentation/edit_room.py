@@ -10,7 +10,6 @@ from app.commons.ui.label_entry import LabelEntry
 from app.commons.ui.label_entry_column import LabelEntryColumn
 from app.commons.ui.triple_image_row import TripleImageRow
 from app.commons.utils.parse import float_try_parse, int_try_parse
-from app.features.room.entities.room_ad import RoomAd
 from app.commons.image.path import *
 
 
@@ -184,5 +183,3 @@ class EditRoom:
             return True
         elif value == 'Não':
             return False
-
-# EditRoom(RoomAd(email='mail', district='distrito', residents=1, images=["C:/Users/victo/Pictures/edited/IMG_1529.jpg", "C:/Users/victo/Downloads/20230315_190422.jpg",  "C:/Users/victo/Downloads/20230315_190422.jpg"], accept_childs=True, has_collateral=False))

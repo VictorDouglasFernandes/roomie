@@ -1,7 +1,7 @@
 from app.commons.entities.ad import *
 
 
-class RoomAd(Ad):
+class PropertyAd(Ad):
     def __init__(self, email: str, share_date=None, active=None, rent_money=None, expenses_money=None, pictures=None,
                  district=None, type=None, residents=None,
                  rooms=None, bathrooms=None, has_collateral=None, accept_smoker=None, accept_pets=None,

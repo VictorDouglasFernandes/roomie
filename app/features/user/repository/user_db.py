@@ -1,5 +1,4 @@
 from app.commons.database.db_helper import DBHelper
-from app.features.room.entities.room_ad import RoomAd
 from app.features.user.entities.user import User
 
 
