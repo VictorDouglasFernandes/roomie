@@ -144,27 +144,26 @@ class AddRoom:
         self.raiz.destroy()
 
     def get_room_ad(self):
-        return RoomAd(
-            email='teste',
-            rent_money=float_try_parse(self.rent.entry.get()),
-            expenses_money=float_try_parse(self.expenses.entry.get()),
-            pictures=self.image_paths,
-            district=self.district_value.get(),
-            type=self.type_value.get(),
-            residents=int_try_parse(self.residents.entry.get()),
-            rooms=int_try_parse(self.rooms.entry.get()),
-            bathrooms=int_try_parse(self.bathrooms.entry.get()),
-            has_collateral=self.str_to_bool(self.valueBefore_value.get()),
-            accept_smoker=self.str_to_bool(self.accept_smoker_value.get()),
-            accept_pets=self.str_to_bool(self.pet_value.get()),
-            accept_childs=self.str_to_bool(self.accept_childs_value.get()),
-            private_condominium=self.str_to_bool(self.close_value.get()),
-            has_garage=self.str_to_bool(self.has_garage_value.get()),
-            has_gym=self.str_to_bool(self.has_gym_value.get()),
-            has_concierge=self.str_to_bool(self.support24h_value.get()),
-            has_pool=self.str_to_bool(self.has_pool_value.get()),
-            has_party_hall=self.str_to_bool(self.partyRoom_value.get()),
-        )
+        return {
+            "rent_money": float_try_parse(self.rent.entry.get()),
+            "expenses_money": float_try_parse(self.expenses.entry.get()),
+            "pictures": self.image_paths,
+            "district": self.district_value.get(),
+            "type": self.type_value.get(),
+            "residents": int_try_parse(self.residents.entry.get()),
+            "rooms": int_try_parse(self.rooms.entry.get()),
+            "bathrooms": int_try_parse(self.bathrooms.entry.get()),
+            "has_collateral": self.str_to_bool(self.valueBefore_value.get()),
+            "accept_smoker": self.str_to_bool(self.accept_smoker_value.get()),
+            "accept_pets": self.str_to_bool(self.pet_value.get()),
+            "accept_childs": self.str_to_bool(self.accept_childs_value.get()),
+            "private_condominium": self.str_to_bool(self.close_value.get()),
+            "has_garage": self.str_to_bool(self.has_garage_value.get()),
+            "has_gym": self.str_to_bool(self.has_gym_value.get()),
+            "has_concierge": self.str_to_bool(self.support24h_value.get()),
+            "has_pool": self.str_to_bool(self.has_pool_value.get()),
+            "has_party_hall": self.str_to_bool(self.partyRoom_value.get()),
+        }
 
     def str_to_bool(self, value):
         if value == 'Sim':

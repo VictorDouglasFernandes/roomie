@@ -19,6 +19,7 @@ class EditRoom:
         self.raiz = Tk()
         self.controller = controller
         self.navigation = None
+        self.original_room = room
         self.base = DefaultFrame(self.raiz, "Editar Anúncio de Quarto")
         self.frame_1 = self.base.frame_1
         self.frame_2 = self.base.frame_2
@@ -153,27 +154,30 @@ class EditRoom:
         self.raiz.destroy()
 
     def get_room_ad(self):
-        return RoomAd(
-            email='teste',
-            rent_money=float_try_parse(self.rent.entry.get()),
-            expenses_money=float_try_parse(self.expenses.entry.get()),
-            pictures=self.image_paths,
-            district=self.district_value.get(),
-            type=self.type_value.get(),
-            residents=int_try_parse(self.residents.entry.get()),
-            rooms=int_try_parse(self.rooms.entry.get()),
-            bathrooms=int_try_parse(self.bathrooms.entry.get()),
-            has_collateral=self.str_to_bool(self.valueBefore_value.get()),
-            accept_smoker=self.str_to_bool(self.accept_smoker_value.get()),
-            accept_pets=self.str_to_bool(self.pet_value.get()),
-            accept_childs=self.str_to_bool(self.accept_childs_value.get()),
-            private_condominium=self.str_to_bool(self.close_value.get()),
-            has_garage=self.str_to_bool(self.has_garage_value.get()),
-            has_gym=self.str_to_bool(self.has_gym_value.get()),
-            has_concierge=self.str_to_bool(self.support24h_value.get()),
-            has_pool=self.str_to_bool(self.has_pool_value.get()),
-            has_party_hall=self.str_to_bool(self.partyRoom_value.get()),
-        )
+        return {
+            "email": self.original_room.email,
+            "share_date": self.original_room.share_date,
+            "active": self.original_room.active,
+            "interested_users": self.original_room.interested_users,
+            "rent_money": float_try_parse(self.rent.entry.get()),
+            "expenses_money": float_try_parse(self.expenses.entry.get()),
+            "pictures": self.image_paths,
+            "district": self.district_value.get(),
+            "type": self.type_value.get(),
+            "residents": int_try_parse(self.residents.entry.get()),
+            "rooms": int_try_parse(self.rooms.entry.get()),
+            "bathrooms": int_try_parse(self.bathrooms.entry.get()),
+            "has_collateral": self.str_to_bool(self.valueBefore_value.get()),
+            "accept_smoker": self.str_to_bool(self.accept_smoker_value.get()),
+            "accept_pets": self.str_to_bool(self.pet_value.get()),
+            "accept_childs": self.str_to_bool(self.accept_childs_value.get()),
+            "private_condominium": self.str_to_bool(self.close_value.get()),
+            "has_garage": self.str_to_bool(self.has_garage_value.get()),
+            "has_gym": self.str_to_bool(self.has_gym_value.get()),
+            "has_concierge": self.str_to_bool(self.support24h_value.get()),
+            "has_pool": self.str_to_bool(self.has_pool_value.get()),
+            "has_party_hall": self.str_to_bool(self.partyRoom_value.get()),
+        }
 
     def str_to_bool(self, value):
         if value == 'Sim':

@@ -22,44 +22,69 @@ class RoomController:
     def user(self):
         return self.user_controller.user
 
-    def ad_room_verification(self, room: RoomAd):
+    def ad_room_verification(self, room):
         _list = []
-        if room.district is None or len(room.district) == 0:
+        if room["district"] is None or len(room["district"]) == 0:
             _list.append('bairro')
-        if room.rent_money is None:
+        if room["rent_money"] is None:
             _list.append('aluguel')
-        elif float_try_parse(room.rent_money) is None:
+        elif float_try_parse(room["rent_money"]) is None:
             _list.append('aluguel inválido')
-        if room.expenses_money is None:
+        if room["expenses_money"] is None:
             _list.append('despesas')
-        elif float_try_parse(room.expenses_money) is None:
+        elif float_try_parse(room["expenses_money"]) is None:
             _list.append('despesas inválido')
-        if room.type is None or len(room.type) == 0:
+        if room["type"] is None or len(room["type"]) == 0:
             _list.append('tipo')
-        if room.residents is None:
+        if room["residents"] is None:
             _list.append('moradores')
-        elif int_try_parse(room.residents) is None:
+        elif int_try_parse(room["residents"]) is None:
             _list.append('moradores inválido')
-        if room.rooms is None:
+        if room["rooms"] is None:
             _list.append('quartos')
-        elif int_try_parse(room.rooms) is None:
+        elif int_try_parse(room["rooms"]) is None:
             _list.append('quartos inválido')
-        if room.bathrooms is None:
+        if room["bathrooms"] is None:
             _list.append('banheiros')
-        elif int_try_parse(room.bathrooms) is None:
+        elif int_try_parse(room["bathrooms"]) is None:
             _list.append('banheiros inválido')
-        if len(room.pictures) == 0:
+        if len(room["pictures"]) == 0:
             _list.append('imagem')
 
         return _list
 
-    def add_ad_room(self, room: RoomAd):
-        room.email = self.user.email
+    def add_ad_room(self, values, update=None):
+        room = RoomAd(
+            email=self.user.email,
+            rent_money=values["rent_money"],
+            expenses_money=values["expenses_money"],
+            pictures=values["pictures"],
+            district=values["district"],
+            type=values["type"],
+            residents=values["residents"],
+            rooms=values["rooms"],
+            bathrooms=values["bathrooms"],
+            has_collateral=values["has_collateral"],
+            accept_smoker=values["accept_smoker"],
+            accept_pets=values["accept_pets"],
+            accept_childs=values["accept_childs"],
+            private_condominium=values["private_condominium"],
+            has_garage=values["has_garage"],
+            has_gym=values["has_gym"],
+            has_concierge=values["has_concierge"],
+            has_pool=values["has_pool"],
+            has_party_hall=values["has_party_hall"],
+        )
+        if update:
+            room.share_date = values["share_date"]
+            room.active = values["active"]
+            room.interested_users = values["interested_users"]
+
         self.dao.add(room)
         # Adicionar ao usuário
 
-    def update_ad_room(self, room: RoomAd):
-        self.add_ad_room(room)
+    def update_ad_room(self, room):
+        self.add_ad_room(room, update=True)
         # Atualizar do usuário
 
     def delete_ad_room(self, room: RoomAd):

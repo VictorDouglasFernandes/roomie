@@ -1,9 +1,13 @@
 from app.commons.entities.ad import *
 
+
 class RoomAd(Ad):
-    def __init__(self, email: str, share_date=None, active=None, rent_money=None, expenses_money=None, pictures=None, district=None, type=None, residents=None,
-                 rooms=None, bathrooms=None, has_collateral=None, accept_smoker=None, accept_pets=None, accept_childs=None, private_condominium=None,
-                 has_garage=None, has_gym=None, has_concierge=None, has_pool=None, has_party_hall=None):
+    def __init__(self, email: str, share_date=None, active=None, rent_money=None, expenses_money=None, pictures=None,
+                 district=None, type=None, residents=None,
+                 rooms=None, bathrooms=None, has_collateral=None, accept_smoker=None, accept_pets=None,
+                 accept_childs=None, private_condominium=None,
+                 has_garage=None, has_gym=None, has_concierge=None, has_pool=None, has_party_hall=None,
+                 interested_users=None):
         super().__init__(email, share_date, active)
         self.__rent_money = None
         self.__expenses_money = None
@@ -23,6 +27,7 @@ class RoomAd(Ad):
         self.__has_concierge = None
         self.__has_pool = None
         self.__has_party_hall = None
+        self.__interested_users = None
         if isinstance(email, str):
             self.__email = email
         if isinstance(rent_money, float):
@@ -61,6 +66,8 @@ class RoomAd(Ad):
             self.__has_pool = has_pool
         if isinstance(has_party_hall, bool):
             self.__has_party_hall = has_party_hall
+        if isinstance(interested_users, list):
+            self.__interested_users = interested_users
 
     @property
     def id(self):
@@ -209,3 +216,11 @@ class RoomAd(Ad):
     @pictures.setter
     def pictures(self, pictures):
         self.__pictures = pictures
+
+    @property
+    def interested_users(self):
+        return self.__interested_users
+
+    @interested_users.setter
+    def interested_users(self, interested_users):
+        self.__interested_users = interested_users

@@ -1,4 +1,7 @@
-class Ad:
+from abc import *
+
+class Ad(ABC):
+    @abstractmethod
     def __init__(self, email=None, share_date=None, active=True):
         self.__email = None
         self.__share_date = None
