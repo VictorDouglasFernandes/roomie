@@ -35,6 +35,8 @@ class UserController:
                 user = self.find_user_by_id(values["user_email"])
                 if isinstance(user, User) and user.password == values["user_password"]:
                     self.user = user
+                    self.user.property_ad = self.room_controller.user_room
+                    self.user.roommate_ad = self.roomie_controller.user_roomie
                     return True
                 else:
                     tkinter.messagebox.showwarning(title="Erro", message="Credenciais inválidas.")
@@ -51,6 +53,9 @@ class UserController:
             return True
         else:
             return False
+
+    def update_user(self, user):
+        self.dao.add(user)
 
     def show_login(self):
         page = Login(self)
@@ -108,9 +113,18 @@ class UserController:
             self.show_logged_in_home_page()
 
     def show_user_ads(self):
-        page = UserAds()
-        if page.navigation == Navigation.GET:
-            pass
+        page = UserAds(self.user)
+        if page.navigation == Navigation.ROOM:
+            navigation = self.room_controller.show_room_detail_page(self.user.property_ad)
+            if navigation is not None:
+                self.show_user_ads()
+        elif page.navigation == Navigation.ROOMIE:
+            self.roomie_controller.show_roomie_detail_page(self.user.roommate_ad)
+        elif page.navigation == Navigation.PUT:
+            if page.update == Navigation.ROOM:
+                pass
+            elif page.update == Navigation.ROOM:
+                pass
         elif page.navigation == Navigation.BACK:
             self.show_user_profile()
 

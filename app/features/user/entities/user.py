@@ -1,6 +1,10 @@
+from app.features.room.entities.property_ad import PropertyAd
+from app.features.roomie.entities.roomie import Roomie
+
+
 class User:
     def __init__(self, name=None, surname=None, birthday=None, sex=None, cpf=None, cellphone_number=None, email=None,
-                 password=None):
+                 password=None, property_ad=None, roommate_ad=None):
         self.__name = None
         self.__surname = None
         self.__birthday = None
@@ -9,6 +13,8 @@ class User:
         self.__cellphone_number = None
         self.__email = None
         self.__password = None
+        self.__property_ad = None
+        self.__roommate_ad = None
         if isinstance(name, str):
             self.__name = name
         if isinstance(surname, str):
@@ -25,6 +31,10 @@ class User:
             self.__email = email
         if isinstance(password, str):
             self.__password = password
+        if isinstance(property_ad, PropertyAd):
+            self.__property_ad = property_ad
+        if isinstance(roommate_ad, Roomie):
+            self.__roommate_ad = roommate_ad
 
     @property
     def id(self):
@@ -101,3 +111,21 @@ class User:
     def password(self, password) -> None:
         if isinstance(password, str):
             self.__password = password
+
+    @property
+    def property_ad(self):
+        return self.__property_ad
+
+    @property_ad.setter
+    def property_ad(self, property_ad) -> None:
+        if property_ad is None or isinstance(property_ad, PropertyAd):
+            self.__property_ad = property_ad
+
+    @property
+    def roommate_ad(self):
+        return self.__roommate_ad
+
+    @roommate_ad.setter
+    def roommate_ad(self, roommate_ad) -> None:
+        if roommate_ad is None or isinstance(roommate_ad, Roomie):
+            self.__roommate_ad = roommate_ad

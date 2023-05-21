@@ -22,6 +22,13 @@ class RoomieController:
     def user(self):
         return self.user_controller.user
 
+    @property
+    def user_roomie(self):
+        for roomie in self.roomies:
+            if roomie.email == self.user.email:
+                return roomie
+        return None
+
     def roomie_verification(self, roomie: Roomie):
         _list = []
         if roomie.picture is None or len(roomie.picture) == 0:
@@ -37,6 +44,7 @@ class RoomieController:
 
     def adicionar(self, roomie: Roomie):
         roomie.email = self.user.email
+        self.user_controller.update_user(self.user)
         self.dao.add(roomie)
         # Atualizar do usuário
 
@@ -44,6 +52,7 @@ class RoomieController:
         self.adicionar(roomie)
 
     def excluir(self, roomie: Roomie):
+        self.user.roommate_ad = None
         self.dao.remove(roomie.id)
         # Atualizar do usuário
 

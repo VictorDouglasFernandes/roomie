@@ -1,5 +1,6 @@
 from app.commons.navigation import Navigation
 from app.commons.utils.parse import *
+from datetime import datetime
 from app.features.room.entities.property_ad import PropertyAd
 from app.features.room.presentation.add_room import AddRoom
 from app.features.room.presentation.edit_room import EditRoom
@@ -21,6 +22,13 @@ class RoomController:
     @property
     def user(self):
         return self.user_controller.user
+
+    @property
+    def user_room(self):
+        for room in self.rooms:
+            if room.email == self.user.email:
+                return room
+        return None
 
     def ad_room_verification(self, room):
         _list = []
@@ -56,6 +64,8 @@ class RoomController:
     def add_ad_room(self, values, update=None):
         room = PropertyAd(
             email=self.user.email,
+            active=True,
+            share_date=datetime.now(),
             rent_money=values["rent_money"],
             expenses_money=values["expenses_money"],
             pictures=values["pictures"],
@@ -79,7 +89,8 @@ class RoomController:
             room.share_date = values["share_date"]
             room.active = values["active"]
             room.interested_users = values["interested_users"]
-
+        self.user.property_ad = room
+        self.user_controller.update_user(self.user)
         self.dao.add(room)
         # Adicionar ao usuário
 
@@ -88,6 +99,7 @@ class RoomController:
         # Atualizar do usuário
 
     def delete_ad_room(self, room: PropertyAd):
+        self.user.property_ad = None
         self.dao.remove(room.id)
         # Remover do usuário
 
@@ -112,14 +124,14 @@ class RoomController:
         page = ListRoom(self.rooms)
         if page.navigation == Navigation.GET:
             room = self.rooms[page.selected_id]
-            self.show_room_ad_page(room)
+            return self.show_room_ad_page(room)
         elif page.navigation == Navigation.BACK:
             return page.navigation
 
     def show_room_ad_page(self, room):
         page = RoomAdPage(room)
         if page.navigation == Navigation.BACK:
-            self.show_list_room()
+            return self.show_list_room()
 
     def show_room_detail_page(self, room):
         page = RoomDetailPage(room)
@@ -128,8 +140,7 @@ class RoomController:
         elif page.navigation == Navigation.BACK or page.navigation == Navigation.DELETE:
             if page.navigation == Navigation.DELETE:
                 self.delete_ad_room(room)
-            pass
-            # Enviar para tela de seleção de que anúncio visualizar
+            return page.navigation
 
 # controller = RoomController()
 # controller.show_list_room()
