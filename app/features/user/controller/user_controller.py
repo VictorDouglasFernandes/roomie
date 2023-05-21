@@ -5,11 +5,13 @@ from app.features.room.controller import room_controller
 from app.features.roomie.controller import roomie_controller
 from app.features.user.entities.user import User
 from app.features.user.presentation.create_ads import CreateAds
+from app.features.user.presentation.edit_account import EditAccount
 from app.features.user.presentation.logged_in_home_page import LoggedInHomePage
 from app.features.user.presentation.login import Login
 from app.features.user.presentation.search_ads import SearchAds
 from app.features.user.presentation.user_ads import UserAds
 from app.features.user.presentation.user_profile import UserProfile
+from app.features.user.presentation.user_register import UserRegister
 from app.features.user.repository.user_db import UserDB
 
 
@@ -47,12 +49,29 @@ class UserController:
         return False
 
     def verify_email_format(self, email_adress):
-        providers_list = ["hotmail", "gmail", "outlook", "live", "yahoo"]
-        if "@" in email_adress and email_adress[email_adress.index("@") + 1: email_adress.index(".com")] in \
-                providers_list:
-            return True
-        else:
+        try:
+            providers_list = ["hotmail", "gmail", "outlook", "live", "yahoo"]
+            if "@" in email_adress and email_adress[email_adress.index("@") + 1: email_adress.index(".com")] in \
+                    providers_list:
+                return True
+            else:
+                return False
+        except:
             return False
+
+    def add_user(self, values):
+        user = User(
+            email=values['email'],
+            password=values['password'],
+            name=values['name'],
+            surname=values['surname'],
+            birthday=values['birthday'],
+            cpf=values['cpf'],
+            sex=values['sex'],
+            cellphone_number=values['cellphone_number'],
+        )
+
+        self.dao.add(user)
 
     def update_user(self, user):
         self.dao.add(user)
@@ -61,6 +80,17 @@ class UserController:
         page = Login(self)
         if page.navigation == Navigation.GET:
             self.show_logged_in_home_page()
+
+    def show_user_register(self):
+        page = UserRegister(self)
+        if page.navigation == Navigation.POST:
+            self.add_user(page.user)
+            self.show_login()
+        elif page.navigation == Navigation.BACK:
+            pass
+
+    def show_edit_account(self):
+        page = EditAccount();
 
     def show_logged_in_home_page(self):
         page = LoggedInHomePage()
@@ -128,7 +158,9 @@ class UserController:
         elif page.navigation == Navigation.BACK:
             self.show_user_profile()
 
+
 controller = UserController()
 controller.dao.add(User(email="victor@gmail.com", password="135"))
 controller.dao.add(User(email="gabriel@hotmail.com", password="12345"))
-controller.show_login()
+# controller.show_login()
+controller.show_user_register()

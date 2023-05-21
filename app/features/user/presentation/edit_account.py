@@ -2,7 +2,7 @@ import tkinter.messagebox
 from app.commons.ui.default_frame import *
 
 
-class Edit:
+class EditAccount:
     def __init__(self):
         # self.__controller = controller
         self.raiz = Tk()
@@ -74,6 +74,3 @@ class Edit:
 
     def showMessageError(self, title, message):
         tkinter.messagebox.showwarning(title=title, message=message)
-
-
-Edit()
