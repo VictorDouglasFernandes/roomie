@@ -172,14 +172,14 @@ class UserController:
         elif page.navigation == Navigation.GET:
             self.show_account_details()
         elif page.navigation == Navigation.INTEREST:
-            self.show_interested_users()
+            room_users = None
+            if self.user.property_ad:
+                room_users = self.find_users_by_ids(self.user.property_ad.interested_users_emails)
+            self.show_interested_users(room_users)
         elif page.navigation == Navigation.BACK:
             self.show_logged_in_home_page()
 
-    def show_interested_users(self):
-        room_users = None
-        if self.user.property_ad:
-            room_users = self.find_users_by_ids(self.user.property_ad.interested_users_emails)
+    def show_interested_users(self, room_users):
         page = InterestedUsersPage(room_users)
         if page.navigation == Navigation.BACK:
             self.show_user_profile()
