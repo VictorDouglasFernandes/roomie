@@ -19,11 +19,11 @@ class UserProfile:
                                         font=('JasmineUPC', 10), command=self.my_account)
         self.bt_minha_conta.place(relx=0.26, rely=0.15, relwidth=0.35, relheight=0.10)
 
-        self.bt_meus_anuncios = Button(self.frame_1, text="MINHA ANÚNCIOS", fg='white', bg='#f4bc44',
+        self.bt_meus_anuncios = Button(self.frame_1, text="MEUS ANÚNCIOS", fg='white', bg='#f4bc44',
                                      font=('JasmineUPC', 10), command=self.ads)
         self.bt_meus_anuncios.place(relx=0.26, rely=0.30, relwidth=0.35, relheight=0.10)
 
-        self.bt_meus_favoritos = Button(self.frame_1, text="MINHA FAVORITOS", fg='white', bg='#f4bc44',
+        self.bt_meus_favoritos = Button(self.frame_1, text="MEUS FAVORITOS", fg='white', bg='#f4bc44',
                                      font=('JasmineUPC', 10))
         self.bt_meus_favoritos.place(relx=0.26, rely=0.45, relwidth=0.35, relheight=0.10)
 

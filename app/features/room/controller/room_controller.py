@@ -7,6 +7,8 @@ from app.features.room.presentation.edit_room import EditRoom
 from app.features.room.presentation.list_room import ListRoom
 from app.features.room.presentation.room_ad_page import RoomAdPage
 from app.features.room.presentation.room_detail_page import RoomDetailPage
+from app.features.room.presentation.qea_user import QeAUser
+from app.features.room.presentation.qea_ad_owner import QeAAdOwner
 from app.features.room.repository.room_db import RoomDB
 
 
@@ -161,9 +163,25 @@ class RoomController:
         return sorted_rooms
 
     def show_room_ad_page(self, room):
-        page = RoomAdPage(room)
+        page = RoomAdPage(room, self.user.email == room.email)
         if page.navigation == Navigation.BACK:
             return self.show_list_room()
+        elif page.navigation == Navigation.QUESTIONS:
+            self.show_questions_page(room)
+
+    def show_questions_page(self, room):
+        def is_back(navigation):
+            return navigation == Navigation.BACK
+        page = QeAUser(room, self)
+        if is_back(page.navigation):
+            return self.show_room_ad_page(room)
+
+    def show_owner_questions_page(self, room):
+        def is_back(navigation):
+            return navigation == Navigation.BACK
+        page = QeAAdOwner(room, self)
+        if is_back(page.navigation):
+            self.show_room_detail_page()
 
     def show_room_detail_page(self, room):
         page = RoomDetailPage(room)
@@ -173,3 +191,37 @@ class RoomController:
             if page.navigation == Navigation.DELETE:
                 self.delete_ad_room(room)
             return page.navigation
+        elif page.navigation == Navigation.QUESTIONS:
+            self.show_owner_questions_page(room)
+
+    def add_room_question(self, question, room):
+        if self.check_question(question, room):
+            room.add_question(question)
+            room.add_answer("")
+            self.dao.add(room)
+            return True
+        else:
+            return False
+
+    def answer_room_question(self, question, answer, room):
+        if self.check_answer_size(answer):
+            index = room.questions.index(question)
+            room.answers[index] = answer
+            self.dao.add(room)
+            return True
+        else:
+            return False
+
+    def delete_ad_question(self, question, room):
+        if question in room.questions:
+            index = room.questions.index(question)
+            del room.questions[index]
+            if len(room.answers) >= index:
+                del room.answers[index]
+            self.dao.add(room)
+
+    def check_question(self, question, room):
+        return len(question) >= 10 and len(question) <= 200 and question not in room.questions
+
+    def check_answer_size(self, answer):
+        return len(answer) >= 3 and len(answer) <= 200

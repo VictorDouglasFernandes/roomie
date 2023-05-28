@@ -29,5 +29,5 @@ class RoomieDetailUI:
 
         self.has_children = LabelDetailColumn(self.frame_1, "Possui filhos?", roomie.has_children, rely=0.6, relx=0.69)
 
-        self.about = LabelDetail(self.frame_2, "Sobre mim", roomie.about, rely=0)
+        self.about = LabelDetail(self.frame_1, "Sobre mim", roomie.about, rely=0)
 

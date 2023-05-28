@@ -11,4 +11,5 @@ class Navigation(Enum):
     LIST = "LIST"
     ROOM = "ROOM"
     ROOMIE = "ROOMIE"
+    QUESTIONS = "QUESTIONS"
 

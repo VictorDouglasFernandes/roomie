@@ -22,7 +22,7 @@ class Login:
                 self.navigation = Navigation.GET
                 self.raiz.destroy()
         else:
-            tkinter.messagebox.showwarning(title="Erro", message="Por favor, preencha os campos obrigatórios.")
+            self.showMessageError("Erro", "Por favor, preencha os campos obrigatórios.")
 
     def tela(self):
         self.base = DefaultFrame(self.raiz, "Entrar na Conta")
