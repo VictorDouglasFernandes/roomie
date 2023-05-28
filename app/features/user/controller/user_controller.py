@@ -4,6 +4,7 @@ from app.commons.navigation import Navigation
 from app.features.room.controller import room_controller
 from app.features.roomie.controller import roomie_controller
 from app.features.user.entities.user import User
+from app.features.user.presentation.account_details import AccountDetails
 from app.features.user.presentation.create_ads import CreateAds
 from app.features.user.presentation.edit_account import EditAccount
 from app.features.user.presentation.logged_in_home_page import LoggedInHomePage
@@ -60,21 +61,28 @@ class UserController:
             return False
 
     def add_user(self, values):
-        user = User(
-            email=values['email'],
-            password=values['password'],
-            name=values['name'],
-            surname=values['surname'],
-            birthday=values['birthday'],
-            cpf=values['cpf'],
-            sex=values['sex'],
-            cellphone_number=values['cellphone_number'],
-        )
+        user = None
+        if isinstance(values, User):
+            user = values
+        else:
+            user = User(
+                email=values['email'],
+                password=values['password'],
+                name=values['name'],
+                surname=values['surname'],
+                birthday=values['birthday'],
+                cpf=values['cpf'],
+                sex=values['sex'],
+                cellphone_number=values['cellphone_number'],
+            )
 
         self.dao.add(user)
 
     def update_user(self, user):
         self.dao.add(user)
+
+    def delete_user(self):
+        self.dao.remove(self.user.id)
 
     def show_login(self):
         page = Login(self)
@@ -89,8 +97,38 @@ class UserController:
         elif page.navigation == Navigation.BACK:
             pass
 
+    def show_account_details(self):
+        page = AccountDetails(self.user)
+        if page.navigation == Navigation.PUT:
+            self.show_edit_account()
+        elif page.navigation == Navigation.DELETE:
+            self.delete_user()
+            self.show_login()
+        elif page.navigation == Navigation.BACK:
+            self.show_user_profile()
+
     def show_edit_account(self):
-        page = EditAccount();
+        page = EditAccount(self)
+        if page.navigation == Navigation.PUT:
+            room = self.room_controller.user_room
+            if room:
+                self.room_controller.dao.remove(room.email)
+                room.email = page.user['email']
+                self.room_controller.dao.add(room)
+            roomie = self.roomie_controller.user_roomie
+            if roomie:
+                self.roomie_controller.dao.remove(roomie.email)
+                roomie.email = page.user['email']
+                self.roomie_controller.dao.add(roomie)
+            self.add_user(page.user)
+            self.user = self.find_user_by_id(page.user['email'])
+            if self.room_controller.user_room:
+                self.user.property_ad = self.room_controller.user_room
+            if self.roomie_controller.user_roomie:
+                self.user.roommate_ad = self.roomie_controller.user_roomie
+            self.show_account_details()
+        elif page.navigation == Navigation.BACK:
+            self.show_account_details()
 
     def show_logged_in_home_page(self):
         page = LoggedInHomePage()
@@ -123,7 +161,7 @@ class UserController:
         if page.navigation == Navigation.AD:
             self.show_user_ads()
         elif page.navigation == Navigation.GET:
-            pass
+            self.show_account_details()
         elif page.navigation == Navigation.BACK:
             self.show_logged_in_home_page()
 
@@ -162,5 +200,5 @@ class UserController:
 controller = UserController()
 controller.dao.add(User(email="victor@gmail.com", password="135"))
 controller.dao.add(User(email="gabriel@hotmail.com", password="12345"))
-# controller.show_login()
-controller.show_user_register()
+controller.show_login()
+# controller.show_user_register()
