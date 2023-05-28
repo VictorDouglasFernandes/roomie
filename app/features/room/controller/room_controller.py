@@ -121,12 +121,44 @@ class RoomController:
             self.show_room_detail_page(room)
 
     def show_list_room(self):
-        page = ListRoom(self.rooms)
-        if page.navigation == Navigation.GET:
-            room = self.rooms[page.selected_id]
+        def is_back(navigation):
+            return navigation == Navigation.BACK
+        def see_detail(navigation):
+            return navigation == Navigation.GET
+
+        page = ListRoom(self.rooms, self)
+        if see_detail(page.navigation):
+            room = page.filtered_rooms[page.selected_id]
             return self.show_room_ad_page(room)
-        elif page.navigation == Navigation.BACK:
+        elif is_back(page.navigation):
             return page.navigation
+
+    def filter_by_district(self, rooms, district):
+        return [room for room in rooms if room.district == district]
+
+    def filter_by_price(self, rooms, price_order):
+        def not_all():
+            return price_order == "Crescente" or price_order == "Decrescente"
+        if not_all():
+            return sorted(rooms, key=lambda room: room.rent_money, reverse=price_order != "Crescente")
+        else:
+            return rooms
+
+    def filter_by_date(self, rooms, date_order):
+        def not_all():
+            return date_order == "Crescente" or date_order == "Decrescente"
+        if not_all():
+            return sorted(rooms, key=lambda room: room.share_date, reverse=date_order != "Crescente")
+        else:
+            return rooms
+
+    def sort_all_rooms(self, rooms, date_order, selected_district):
+        sorted_rooms = sorted(rooms, key=lambda room: room.share_date, reverse=date_order != "Crescente")
+        sorted_rooms = sorted(sorted_rooms,
+                              key=lambda room: room.district if room.district != selected_district else "",
+                              reverse=False)
+
+        return sorted_rooms
 
     def show_room_ad_page(self, room):
         page = RoomAdPage(room)
@@ -141,49 +173,3 @@ class RoomController:
             if page.navigation == Navigation.DELETE:
                 self.delete_ad_room(room)
             return page.navigation
-
-# controller = RoomController()
-# controller.show_list_room()
-# controller.dao.add(RoomAd(
-#     email='a@a.com',
-#     rent_money=123.0,
-#     expenses_money=234.0,
-#     images=["C:/Users/victo/PycharmProjects/roomie/app/commons/image/name.jpg"],
-#     district="Trindade",
-#     type=None,
-#     residents=2,
-#     rooms=3,
-#     bathrooms=4,
-#     has_collateral=True,
-#     accept_smoker=True,
-#     pets=True,
-#     accept_childs=True,
-#     private_condominium=False,
-#     has_garage=False,
-#     has_gym=False,
-#     has_concierge=False,
-#     has_pool=False,
-#     has_party_hall=False,
-# ))
-# controller.dao.add(RoomAd(
-#     email='b@b.com',
-#     rent_money=345.0,
-#     expenses_money=456.0,
-#     images=[],
-#     district='Trindade',
-#     type=None,
-#     residents=3,
-#     rooms=4,
-#     bathrooms=5,
-#     has_collateral=False,
-#     accept_smoker=False,
-#     pets=False,
-#     accept_childs=False,
-#     private_condominium=True,
-#     has_garage=True,
-#     has_gym=True,
-#     has_concierge=True,
-#     has_pool=True,
-#     has_party_hall=True,
-# ))
-# controller.show_room_detail_page(controller.rooms[0])

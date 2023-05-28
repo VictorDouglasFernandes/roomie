@@ -7,8 +7,10 @@ from app.commons.ui.default_single_frame import DefaultSingleFrame
 
 
 class ListRoom:
-    def __init__(self, rooms=None):
+    def __init__(self, rooms=None, controller=None):
         self.rooms = rooms
+        self.filtered_rooms = self.rooms
+        self.controller = controller
         self.navigation = None
         self.selected_id = None
         self.raiz = Tk()
@@ -101,56 +103,32 @@ class ListRoom:
         selected_district = self.district_var.get()
         selected_date = self.date_var.get()
 
+        def has_distric_filter():
+           return selected_district != "Todos"
+        def has_price_filter():
+            return selected_price != "Todos"
+        def has_date_filter():
+            return selected_date != "Todos"
+        def has_all():
+            return has_distric_filter() and has_price_filter() and has_date_filter()
+
         # Aplicar filtros aos quartos
         filtered_rooms = self.rooms
 
-        if selected_district != "Todos":
-            filtered_rooms = self.filter_by_district(filtered_rooms, selected_district)
+        if has_distric_filter():
+            filtered_rooms = self.controller.filter_by_district(filtered_rooms, selected_district)
 
-        if selected_price != "Todos":
-            filtered_rooms = self.filter_by_price(filtered_rooms, selected_price)
+        if has_price_filter():
+            filtered_rooms = self.controller.filter_by_price(filtered_rooms, selected_price)
 
-        if selected_date != "Todas":
-            filtered_rooms = self.filter_by_date(filtered_rooms, selected_date)
+        if has_date_filter():
+            filtered_rooms = self.controller.filter_by_date(filtered_rooms, selected_date)
 
-        if selected_price != "Todos" and selected_district != "Todos" and selected_date != "Todas":
-            filtered_rooms = self.sort_all_rooms(filtered_rooms, selected_date, selected_district)
+        if has_all():
+            filtered_rooms = self.controller.sort_all_rooms(filtered_rooms, selected_date, selected_district)
 
         self.filtered_rooms = filtered_rooms
         self.update_listbox()
-
-    def filter_by_district(self, rooms, district):
-        return [room for room in rooms if room.district == district]
-
-    def filter_by_price(self, rooms, price_order):
-        if price_order == "Crescente":
-            return sorted(rooms, key=lambda room: room.rent_money)
-        elif price_order == "Decrescente":
-            return sorted(rooms, key=lambda room: room.rent_money, reverse=True)
-        else:
-            return rooms
-
-    def filter_by_date(self, rooms, date_order):
-        if date_order == "Crescente":
-            return sorted(rooms, key=lambda room: room.share_date)
-        elif date_order == "Decrescente":
-            return sorted(rooms, key=lambda room: room.share_date, reverse=True)
-        else:
-            return rooms
-
-    def sort_all_rooms(self, rooms, date_order, selected_district):
-        if date_order == "Crescente":
-            reverse_date = False
-        elif date_order == "Decrescente":
-            reverse_date = True
-
-
-        sorted_rooms = sorted(rooms, key=lambda room: room.share_date, reverse=reverse_date)
-        sorted_rooms = sorted(sorted_rooms,
-                              key=lambda room: room.district if room.district != selected_district else "",
-                              reverse=False)
-
-        return sorted_rooms
 
     def update_listbox(self):
         self.listbox.delete(0, END)
