@@ -6,7 +6,7 @@ from app.features.room.presentation.room_detail_ui import RoomDetailUI
 
 
 class RoomAdPage:
-    def __init__(self, room=None):
+    def __init__(self, room=None, creator=None):
         self.raiz = Tk()
         self.navigation = None
         self.ui = RoomDetailUI(self.raiz, room=room)
@@ -14,9 +14,10 @@ class RoomAdPage:
         self.back_button = Button(self.ui.base.bottom_frame, text="VOLTAR", bg=kYellow, fg=kWhite, command=self.back)
         self.back_button.place(relx=0.7, rely=0, relheight=1, relwidth=0.3)
 
-        self.qea_button = Button(self.ui.base.bottom_frame, text="PERGUNTAS E RESPOSTAS", bg=kYellow, fg=kWhite,
+        if not creator:
+            self.qea_button = Button(self.ui.base.bottom_frame, text="PERGUNTAS E RESPOSTAS", bg=kYellow, fg=kWhite,
                                  command=self.questions)
-        self.qea_button.place(relx=0.27, rely=0, relheight=1, relwidth=0.3)
+            self.qea_button.place(relx=0.27, rely=0, relheight=1, relwidth=0.3)
 
         self.raiz.mainloop()
 

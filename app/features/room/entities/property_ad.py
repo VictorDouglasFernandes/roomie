@@ -7,7 +7,7 @@ class PropertyAd(Ad):
                  rooms=None, bathrooms=None, has_collateral=None, accept_smoker=None, accept_pets=None,
                  accept_childs=None, private_condominium=None,
                  has_garage=None, has_gym=None, has_concierge=None, has_pool=None, has_party_hall=None,
-                 interested_users=None, questions=None):
+                 interested_users=None, questions=None, answers=None):
         super().__init__(email, share_date, active)
         self.__rent_money = None
         self.__expenses_money = None
@@ -29,6 +29,7 @@ class PropertyAd(Ad):
         self.__has_party_hall = None
         self.__interested_users = None
         self.__questions = None
+        self.__answers = None
         if isinstance(email, str):
             self.__email = email
         if isinstance(rent_money, float):
@@ -69,8 +70,10 @@ class PropertyAd(Ad):
             self.__has_party_hall = has_party_hall
         if isinstance(interested_users, list):
             self.__interested_users = interested_users
-        if isinstance(questions, dict):
+        if isinstance(questions, list):
             self.__questions = questions
+        if isinstance(answers, list):
+            self.__answers = answers
 
     @property
     def id(self):
@@ -236,6 +239,22 @@ class PropertyAd(Ad):
     def questions(self, questions):
         self.__questions = questions
 
-teste = PropertyAd("gabriel@hotmail.com")
-teste.questions = {"?": "sim"}
-print(teste.questions)
+    def add_question(self, question):
+        if isinstance(self.questions, list):
+            self.questions.append(question)
+        else:
+            self.questions = [question]
+
+    @property
+    def answers(self):
+        return self.__answers
+
+    @answers.setter
+    def answers(self, answers):
+        self.__answers = answers
+
+    def add_answer(self, answer):
+        if isinstance(self.answers, list):
+            self.answers.append(answer)
+        else:
+            self.answers = [answer]

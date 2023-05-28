@@ -122,7 +122,7 @@ class RoomController:
         elif page.navigation == Navigation.BACK:
             self.show_room_detail_page(room)
 
-    def show_list_room(self):  # !
+    def show_list_room(self):
         page = ListRoom(self.rooms)
         if page.navigation == Navigation.GET:
             room = self.rooms[page.selected_id]
@@ -130,18 +130,26 @@ class RoomController:
         elif page.navigation == Navigation.BACK:
             return page.navigation
 
-    def show_room_ad_page(self, room):  # !
-        page = RoomAdPage(room)
+    def show_room_ad_page(self, room):
+        page = RoomAdPage(room, self.user.email == room.email)
         if page.navigation == Navigation.BACK:
             return self.show_list_room()
         elif page.navigation == Navigation.QUESTIONS:
             self.show_questions_page(room)
 
     def show_questions_page(self, room):
-        if room.email == self.user.email:
-            page = QeAAdOwner(self)
-        else:
-            page = QeAUser(room, self)
+        def is_back(navigation):
+            return navigation == Navigation.BACK
+        page = QeAUser(room, self)
+        if is_back(page.navigation):
+            return self.show_room_ad_page(room)
+
+    def show_owner_questions_page(self, room):
+        def is_back(navigation):
+            return navigation == Navigation.BACK
+        page = QeAAdOwner(room, self)
+        if is_back(page.navigation):
+            self.show_room_detail_page()
 
     def show_room_detail_page(self, room):
         page = RoomDetailPage(room)
@@ -151,83 +159,37 @@ class RoomController:
             if page.navigation == Navigation.DELETE:
                 self.delete_ad_room(room)
             return page.navigation
+        elif page.navigation == Navigation.QUESTIONS:
+            self.show_owner_questions_page(room)
 
-    def add_room_question(self, question):
-        question_size_is_correct = self.check_question_size(question)
-        if question_size_is_correct:
-            # room.questions[question] = ""
+    def add_room_question(self, question, room):
+        if self.check_question(question, room):
+            room.add_question(question)
+            room.add_answer("")
+            self.dao.add(room)
             return True
         else:
             return False
 
-
-    def answer_room_question(self, answer):
-        answer_size_is_correct = self.check_answer_size(answer)
-        if answer_size_is_correct:
-            # room.questions[question] = answer
+    def answer_room_question(self, question, answer, room):
+        if self.check_answer_size(answer):
+            index = room.questions.index(question)
+            room.answers[index] = answer
+            self.dao.add(room)
             return True
         else:
             return False
 
-    def delete_ad_question(self, question):
-        pass
+    def delete_ad_question(self, question, room):
+        if question in room.questions:
+            index = room.questions.index(question)
+            del room.questions[index]
+            if len(room.answers) >= index:
+                del room.answers[index]
+            self.dao.add(room)
 
-    def check_question_size(self, question):
-        question_len = len(question)
-        if question_len >= 10 and question_len <= 200:
-            return True
-        else:
-            return
+    def check_question(self, question, room):
+        return len(question) >= 10 and len(question) <= 200 and question not in room.questions
 
-    def check_answer_size(self, question):
-        question_len = len(question)
-        if question_len >= 3 and question_len <= 200:
-            return True
-        else:
-            return False
-
-# controller = RoomController()
-# controller.show_list_room()
-# controller.dao.add(RoomAd(
-#     email='a@a.com',
-#     rent_money=123.0,
-#     expenses_money=234.0,
-#     images=["C:/Users/victo/PycharmProjects/roomie/app/commons/image/name.jpg"],
-#     district="Trindade",
-#     type=None,
-#     residents=2,
-#     rooms=3,
-#     bathrooms=4,
-#     has_collateral=True,
-#     accept_smoker=True,
-#     pets=True,
-#     accept_childs=True,
-#     private_condominium=False,
-#     has_garage=False,
-#     has_gym=False,
-#     has_concierge=False,
-#     has_pool=False,
-#     has_party_hall=False,
-# ))
-# controller.dao.add(RoomAd(
-#     email='b@b.com',
-#     rent_money=345.0,
-#     expenses_money=456.0,
-#     images=[],
-#     district='Trindade',
-#     type=None,
-#     residents=3,
-#     rooms=4,
-#     bathrooms=5,
-#     has_collateral=False,
-#     accept_smoker=False,
-#     pets=False,
-#     accept_childs=False,
-#     private_condominium=True,
-#     has_garage=True,
-#     has_gym=True,
-#     has_concierge=True,
-#     has_pool=True,
-#     has_party_hall=True,
-# ))
-# controller.show_room_detail_page(controller.rooms[0])
+    def check_answer_size(self, answer):
+        return len(answer) >= 3 and len(answer) <= 200
