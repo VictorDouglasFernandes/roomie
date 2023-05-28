@@ -139,9 +139,9 @@ class RoomController:
 
     def show_questions_page(self, room):
         if room.email == self.user.email:
-            page = QeAAdOwner(room)
+            page = QeAAdOwner(self)
         else:
-            page = QeAUser(room)
+            page = QeAUser(room, self)
 
     def show_room_detail_page(self, room):
         page = RoomDetailPage(room)

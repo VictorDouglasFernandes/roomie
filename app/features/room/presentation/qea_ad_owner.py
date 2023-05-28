@@ -6,11 +6,10 @@ from app.commons.ui.default_frame import *
 from app.commons.colors.colors import *
 from app.commons.navigation import Navigation
 from app.features.room.presentation.room_detail_ui import RoomDetailUI
-# from app.features.room.controller.room_controller import RoomController
 
 class QeAAdOwner:
-    def __init__(self, room=None):
-        # self.__controller = controller
+    def __init__(self, controller):
+        self.__controller = controller
         self.raiz = Tk()
         self.navigation = None
         self.tela()

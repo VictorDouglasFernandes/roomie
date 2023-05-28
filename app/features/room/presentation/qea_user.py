@@ -7,10 +7,11 @@ from app.features.room.presentation.room_detail_ui import RoomDetailUI
 # from app.features.room.controller.room_controller import RoomController
 
 class QeAUser:
-    def __init__(self, room=None):
+    def __init__(self, room=None, controller=None):
         self.raiz = Tk()
         self.navigation = None
         self.room = room
+        self.__controller = controller
         self.tela()
         if self.room.questions:
             self.question()
