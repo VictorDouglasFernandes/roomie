@@ -7,6 +7,8 @@ from app.features.room.presentation.edit_room import EditRoom
 from app.features.room.presentation.list_room import ListRoom
 from app.features.room.presentation.room_ad_page import RoomAdPage
 from app.features.room.presentation.room_detail_page import RoomDetailPage
+from app.features.room.presentation.qea_user import QeAUser
+from app.features.room.presentation.qea_ad_owner import QeAAdOwner
 from app.features.room.repository.room_db import RoomDB
 
 
@@ -120,7 +122,7 @@ class RoomController:
         elif page.navigation == Navigation.BACK:
             self.show_room_detail_page(room)
 
-    def show_list_room(self):
+    def show_list_room(self):  # !
         page = ListRoom(self.rooms)
         if page.navigation == Navigation.GET:
             room = self.rooms[page.selected_id]
@@ -128,10 +130,18 @@ class RoomController:
         elif page.navigation == Navigation.BACK:
             return page.navigation
 
-    def show_room_ad_page(self, room):
+    def show_room_ad_page(self, room):  # !
         page = RoomAdPage(room)
         if page.navigation == Navigation.BACK:
             return self.show_list_room()
+        elif page.navigation == Navigation.QUESTIONS:
+            self.show_questions_page(room)
+
+    def show_questions_page(self, room):
+        if room.email == self.user.email:
+            page = QeAAdOwner(room)
+        else:
+            page = QeAUser(room)
 
     def show_room_detail_page(self, room):
         page = RoomDetailPage(room)
@@ -141,6 +151,40 @@ class RoomController:
             if page.navigation == Navigation.DELETE:
                 self.delete_ad_room(room)
             return page.navigation
+
+    def add_room_question(self, question):
+        question_size_is_correct = self.check_question_size(question)
+        if question_size_is_correct:
+            # room.questions[question] = ""
+            return True
+        else:
+            return False
+
+
+    def answer_room_question(self, answer):
+        answer_size_is_correct = self.check_answer_size(answer)
+        if answer_size_is_correct:
+            # room.questions[question] = answer
+            return True
+        else:
+            return False
+
+    def delete_ad_question(self, question):
+        pass
+
+    def check_question_size(self, question):
+        question_len = len(question)
+        if question_len >= 10 and question_len <= 200:
+            return True
+        else:
+            return
+
+    def check_answer_size(self, question):
+        question_len = len(question)
+        if question_len >= 3 and question_len <= 200:
+            return True
+        else:
+            return False
 
 # controller = RoomController()
 # controller.show_list_room()

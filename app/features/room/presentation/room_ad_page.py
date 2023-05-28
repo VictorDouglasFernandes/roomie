@@ -14,7 +14,15 @@ class RoomAdPage:
         self.back_button = Button(self.ui.base.bottom_frame, text="VOLTAR", bg=kYellow, fg=kWhite, command=self.back)
         self.back_button.place(relx=0.7, rely=0, relheight=1, relwidth=0.3)
 
+        self.qea_button = Button(self.ui.base.bottom_frame, text="PERGUNTAS E RESPOSTAS", bg=kYellow, fg=kWhite,
+                                 command=self.questions)
+        self.qea_button.place(relx=0.27, rely=0, relheight=1, relwidth=0.3)
+
         self.raiz.mainloop()
+
+    def questions(self):
+        self.navigation = Navigation.QUESTIONS
+        self.raiz.destroy()
 
     def back(self):
         self.navigation = Navigation.BACK

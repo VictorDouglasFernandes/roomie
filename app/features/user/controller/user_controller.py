@@ -158,9 +158,11 @@ class UserController:
         elif page.navigation == Navigation.BACK:
             self.show_user_profile()
 
+    def check_if_ad_belongs_to_user(self):
+        pass
 
 controller = UserController()
 controller.dao.add(User(email="victor@gmail.com", password="135"))
 controller.dao.add(User(email="gabriel@hotmail.com", password="12345"))
-# controller.show_login()
-controller.show_user_register()
+controller.show_login()
+# controller.show_user_register()

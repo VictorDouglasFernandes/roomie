@@ -11,6 +11,7 @@ class RoomieDetailUI:
         self.base = DefaultFrame(self.raiz, "Anúncio de colega de quarto")
         self.frame_1 = self.base.frame_1
         self.frame_2 = self.base.frame_2
+        self.frame3 = self.base.frame_3
 
         self.image = ImageClickable(self.frame_1, roomie.picture)
 
@@ -29,5 +30,5 @@ class RoomieDetailUI:
 
         self.has_children = LabelDetailColumn(self.frame_1, "Possui filhos?", roomie.has_children, rely=0.6, relx=0.69)
 
-        self.about = LabelDetail(self.frame_2, "Sobre mim", roomie.about, rely=0)
+        self.about = LabelDetail(self.frame_1, "Sobre mim", roomie.about, rely=0)
 
