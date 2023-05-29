@@ -28,7 +28,7 @@ class UserProfile:
         self.bt_meus_favoritos.place(relx=0.26, rely=0.45, relwidth=0.35, relheight=0.10)
 
         self.bt_interessados = Button(self.frame_1, text="INTERESSADOS", fg='white', bg='#f4bc44',
-                                     font=('JasmineUPC', 10))
+                                     font=('JasmineUPC', 10), command=self.interested)
         self.bt_interessados.place(relx=0.26, rely=0.60, relwidth=0.35, relheight=0.10)
 
         self.bt_voltar = Button(self.frame_1, text="VOLTAR", fg='white', bg='#f4bc44',
@@ -41,6 +41,10 @@ class UserProfile:
 
     def ads(self):
         self.navigation = Navigation.AD
+        self.raiz.destroy()
+
+    def interested(self):
+        self.navigation = Navigation.INTEREST
         self.raiz.destroy()
 
     def back(self):

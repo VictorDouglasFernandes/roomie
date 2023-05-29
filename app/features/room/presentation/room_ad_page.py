@@ -12,17 +12,25 @@ class RoomAdPage:
         self.ui = RoomDetailUI(self.raiz, room=room)
 
         self.back_button = Button(self.ui.base.bottom_frame, text="VOLTAR", bg=kYellow, fg=kWhite, command=self.back)
-        self.back_button.place(relx=0.7, rely=0, relheight=1, relwidth=0.3)
+        self.back_button.place(relx=0.72, rely=0, relheight=1, relwidth=0.28)
 
         if not creator:
             self.qea_button = Button(self.ui.base.bottom_frame, text="PERGUNTAS E RESPOSTAS", bg=kYellow, fg=kWhite,
                                  command=self.questions)
-            self.qea_button.place(relx=0.27, rely=0, relheight=1, relwidth=0.3)
+            self.qea_button.place(relx=0, rely=0, relheight=1, relwidth=0.28)
+
+            self.interest_button = Button(self.ui.base.bottom_frame, text="TENHO\nINTERESSE", bg=kYellow, fg=kWhite,
+                                      command=self.interested)
+            self.interest_button.place(relx=0.34, rely=0, relheight=1, relwidth=0.28)
 
         self.raiz.mainloop()
 
     def questions(self):
         self.navigation = Navigation.QUESTIONS
+        self.raiz.destroy()
+    
+    def interested(self):
+        self.navigation = Navigation.INTEREST
         self.raiz.destroy()
 
     def back(self):

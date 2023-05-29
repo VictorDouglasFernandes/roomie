@@ -7,8 +7,8 @@ class PropertyAd(Ad):
                  rooms=None, bathrooms=None, has_collateral=None, accept_smoker=None, accept_pets=None,
                  accept_childs=None, private_condominium=None,
                  has_garage=None, has_gym=None, has_concierge=None, has_pool=None, has_party_hall=None,
-                 interested_users=None, questions=None, answers=None):
-        super().__init__(email, share_date, active)
+                 interested_users=None, interested_users_emails=None, questions=None, answers=None):
+        super().__init__(email, share_date, active, interested_users_emails)
         self.__rent_money = None
         self.__expenses_money = None
         self.__pictures = None
@@ -231,6 +231,12 @@ class PropertyAd(Ad):
     def interested_users(self, interested_users):
         self.__interested_users = interested_users
 
+    def add_interested_user(self, user):
+        if isinstance(self.interested_users, list):
+            self.__interested_users.append(user)
+        else:
+            self.__interested_users = [user]
+    
     @property
     def questions(self):
         return self.__questions

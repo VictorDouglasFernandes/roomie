@@ -12,4 +12,5 @@ class Navigation(Enum):
     ROOM = "ROOM"
     ROOMIE = "ROOMIE"
     QUESTIONS = "QUESTIONS"
+    INTEREST = "INTEREST"
 

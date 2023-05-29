@@ -163,10 +163,23 @@ class RoomController:
         return sorted_rooms
 
     def show_room_ad_page(self, room):
-        page = RoomAdPage(room, self.user.email == room.email)
-        if page.navigation == Navigation.BACK:
+        def is_back(navigation):
+            return navigation == Navigation.BACK
+        def is_interested(navigation):
+            return navigation == Navigation.INTEREST
+        def not_already_interested():
+            return self.user.email not in room.interested_users_emails
+        def show_questions(navigation):
+            return navigation == Navigation.QUESTIONS
+        page = RoomAdPage(room, room.email == self.user.email)
+        if is_back(page.navigation):
             return self.show_list_room()
-        elif page.navigation == Navigation.QUESTIONS:
+        elif is_interested(page.navigation):
+            if not_already_interested:
+                room.add_interested_user_email(self.user.email)
+                self.dao.add(room)
+            return self.show_list_room()
+        elif show_questions(page.navigation):
             self.show_questions_page(room)
 
     def show_questions_page(self, room):

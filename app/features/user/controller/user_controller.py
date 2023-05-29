@@ -2,6 +2,7 @@ import tkinter
 
 from app.commons.navigation import Navigation
 from app.features.room.controller import room_controller
+from app.features.room.presentation.interested_users_page import InterestedUsersPage
 from app.features.roomie.controller import roomie_controller
 from app.features.user.entities.user import User
 from app.features.user.presentation.account_details import AccountDetails
@@ -31,6 +32,14 @@ class UserController:
         for user in self.users:
             if user.id == id:
                 return user
+
+    def find_users_by_ids(self, ids: list):
+        users = []
+        if isinstance(ids, list):
+            for user in self.users:
+                if user.id in ids:
+                    users.append(user)
+        return users
 
     def verify_login(self, values):
         if values["user_email"] is not None and values["user_password"] is not None:
@@ -162,8 +171,18 @@ class UserController:
             self.show_user_ads()
         elif page.navigation == Navigation.GET:
             self.show_account_details()
+        elif page.navigation == Navigation.INTEREST:
+            room_users = None
+            if self.user.property_ad:
+                room_users = self.find_users_by_ids(self.user.property_ad.interested_users_emails)
+            self.show_interested_users(room_users)
         elif page.navigation == Navigation.BACK:
             self.show_logged_in_home_page()
+
+    def show_interested_users(self, room_users):
+        page = InterestedUsersPage(room_users)
+        if page.navigation == Navigation.BACK:
+            self.show_user_profile()
 
     def show_search_ads(self):
         page = SearchAds()
