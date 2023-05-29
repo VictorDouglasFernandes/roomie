@@ -82,5 +82,7 @@ class QeAAdOwner:
         self.create_list()
 
     def delete_question(self, question):
-        self.controller.delete_ad_question(question, self.room)
+        delete = self.controller.delete_ad_question(question, self.room)
+        if delete:
+            tkinter.messagebox.showwarning(title="Sucesso", message="Pergunta excluída com sucesso!")
         self.update_list()

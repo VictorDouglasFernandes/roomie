@@ -1,3 +1,5 @@
+from tkinter.messagebox import askyesno
+
 from app.commons.navigation import Navigation
 from app.commons.utils.parse import *
 from datetime import datetime
@@ -194,7 +196,7 @@ class RoomController:
             return navigation == Navigation.BACK
         page = QeAAdOwner(room, self)
         if is_back(page.navigation):
-            self.show_room_detail_page()
+            self.show_room_detail_page(room)
 
     def show_room_detail_page(self, room):
         page = RoomDetailPage(room)
@@ -226,15 +228,19 @@ class RoomController:
             return False
 
     def delete_ad_question(self, question, room):
-        if question in room.questions:
+        confirmation = askyesno("Confirmação", "Deseja mesmo excluir a pergunta?")
+        if question in room.questions and confirmation:
             index = room.questions.index(question)
             del room.questions[index]
             if len(room.answers) >= index:
                 del room.answers[index]
             self.dao.add(room)
+            return True
+        else:
+            return False
 
     def check_question(self, question, room):
-        return len(question) >= 10 and len(question) <= 200 and question not in room.questions
+        return len(question) >= 10 and len(question) <= 200 # and question not in room.questions
 
     def check_answer_size(self, answer):
         return len(answer) >= 3 and len(answer) <= 200
