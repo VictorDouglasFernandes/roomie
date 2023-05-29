@@ -63,7 +63,7 @@ class PropertyAd(Ad):
         if isinstance(has_gym, bool):
             self.__has_gym = has_gym
         if isinstance(has_concierge, bool):
-            self.__has_corcierge = has_concierge
+            self.__has_concierge = has_concierge
         if isinstance(has_pool, bool):
             self.__has_pool = has_pool
         if isinstance(has_party_hall, bool):
