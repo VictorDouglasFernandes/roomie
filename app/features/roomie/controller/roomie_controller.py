@@ -65,7 +65,11 @@ class RoomieController:
             return page.navigation
 
     def show_list_roomie(self):
-        page = ListRoomie(self.roomies)
+        active_roomie_ads = []
+        for roomie in self.roomies:
+            if roomie.active:
+                active_roomie_ads.append(roomie)
+        page = ListRoomie(active_roomie_ads)
         if page.navigation == Navigation.GET:
             roomie = self.roomies[page.selected_id]
             return self.show_roomie_ad_page(roomie)

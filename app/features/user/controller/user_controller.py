@@ -14,6 +14,7 @@ from app.features.user.presentation.search_ads import SearchAds
 from app.features.user.presentation.user_ads import UserAds
 from app.features.user.presentation.user_profile import UserProfile
 from app.features.user.presentation.user_register import UserRegister
+from app.features.user.presentation.system_grade import SystemGrade
 from app.features.user.repository.user_db import UserDB
 
 
@@ -115,6 +116,24 @@ class UserController:
             self.show_login()
         elif page.navigation == Navigation.BACK:
             self.show_user_profile()
+        elif page.navigation == Navigation.RATE:
+            self.show_system_grade()
+
+    def show_system_grade(self):
+        page = SystemGrade(self.user, self)
+        if page.navigation == Navigation.BACK:
+            self.show_account_details()
+
+    def rate_system(self, user, system_grade):
+        if user.system_grade is None:
+            user.system_grade = system_grade
+            # dao
+            return True
+        else:
+            return False
+
+    def check_system_grade_size(self, system_grade):
+        return len(system_grade) <= 200
 
     def show_edit_account(self):
         page = EditAccount(self)
