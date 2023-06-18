@@ -108,16 +108,20 @@ class UserAds:
         if status == "Ativo":
             self.property_status_anuncio.config(text="Inativo", fg='grey')
             self.user.property_ad.active = False
+            # dao
         else:
             self.property_status_anuncio.config(text="Ativo", fg='#f4bc44')
             self.user.property_ad.active = True
+            # dao
 
     def roomie_status_switch(self):
         status = self.roomie_status_anuncio["text"]
         if status == "Ativo":
             self.roomie_status_anuncio.config(text="Inativo", fg='grey')
             self.user.roommate_ad.active = False
+            # dao
         else:
             self.roomie_status_anuncio.config(text="Ativo", fg='#f4bc44')
             self.user.roommate_ad.active = True
+            # dao
 
