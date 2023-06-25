@@ -240,8 +240,12 @@ class UserController:
 
 
 controller = UserController()
-controller.dao.add(User(email="victor@gmail.com", password="135", ))
-controller.dao.add(User(email="gabriel@hotmail.com", password="12345"))
+controller.dao.add(User(name="victor", surname="douglas", birthday="01/01/2000", sex="MALE", cpf="8888888888",
+                        cellphone_number="48 999999999", email="victor@gmail.com", password="135"))
+controller.dao.add(User(name="gabriel", surname="guglielmi", birthday="02/02/2000", sex="MALE", cpf="77777777777",
+                        cellphone_number="48 888888888", email="gabriel@hotmail.com", password="12345"))
+controller.dao.add(User(name="kamilly", surname="victoria", birthday="03/03/2000", sex="FEMALE", cpf="66666666666",
+                        cellphone_number="48 777777777", email="kami@live.com", password="123"))
 controller.show_login()
 # controller.show_roomie_home_page()
 # controller.show_user_register()
