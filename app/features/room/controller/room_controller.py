@@ -229,8 +229,12 @@ class RoomController:
             return False
 
     def add_room_rating(self, rating, room):
-        room.add_ratings(rating)
-        self.dao.add(room)
+        if room.add_ratings is None or rating not in room.ratings:
+            room.add_ratings(rating)
+            self.dao.add(room)
+            return True
+        else:
+            return False
 
     def answer_room_question(self, question, answer, room):
         if self.check_answer_size(answer):
