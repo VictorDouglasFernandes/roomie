@@ -13,4 +13,5 @@ class Navigation(Enum):
     ROOMIE = "ROOMIE"
     QUESTIONS = "QUESTIONS"
     INTEREST = "INTEREST"
+    FAVORITE = "FAVORITE"
 

@@ -105,6 +105,12 @@ class RoomController:
     def delete_ad_room(self, room: PropertyAd):
         self.user.property_ad = None
         self.dao.remove(room.id)
+        for user in self.user_controller.users:
+            if user.favorite_properties is not None:
+                for favorite_property in user.favorite_properties:
+                    if favorite_property == room.id:
+                        user.favorite_properties.remove(favorite_property)
+                        self.user_controller.update_user(user)
         # Remover do usuário
 
     def show_add_room(self):
@@ -165,8 +171,6 @@ class RoomController:
         return sorted_rooms
 
     def show_room_ad_page(self, room):
-        def is_back(navigation):
-            return navigation == Navigation.BACK
         def is_interested(navigation):
             return navigation == Navigation.INTEREST
         def not_already_interested():
@@ -174,10 +178,14 @@ class RoomController:
         def show_questions(navigation):
             return navigation == Navigation.QUESTIONS
         page = RoomAdPage(room, room.email == self.user.email)
-        if is_back(page.navigation):
+        if page.navigation == Navigation.BACK or page.navigation == Navigation.FAVORITE:
+            if page.navigation == Navigation.FAVORITE:
+                if self.user.favorite_properties is None or  room.id not in self.user.favorite_properties:
+                    self.user.add_favorite_property(room.id)
+                    self.user_controller.update_user(self.user)
             return self.show_list_room()
         elif is_interested(page.navigation):
-            if not_already_interested:
+            if not_already_interested():
                 room.add_interested_user_email(self.user.email)
                 self.dao.add(room)
             return self.show_list_room()

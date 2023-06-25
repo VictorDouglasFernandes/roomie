@@ -14,6 +14,8 @@ from app.features.user.presentation.search_ads import SearchAds
 from app.features.user.presentation.user_ads import UserAds
 from app.features.user.presentation.user_profile import UserProfile
 from app.features.user.presentation.user_register import UserRegister
+from app.features.user.presentation.user_favorite_ads import UserFavoriteAds
+from app.features.user.presentation.favorite_room import FavoriteRoom
 from app.features.user.repository.user_db import UserDB
 
 
@@ -176,6 +178,8 @@ class UserController:
             if self.user.property_ad:
                 room_users = self.find_users_by_ids(self.user.property_ad.interested_users_emails)
             self.show_interested_users(room_users)
+        elif page.navigation == Navigation.FAVORITE:
+            self.show_user_favorite_ads()
         elif page.navigation == Navigation.BACK:
             self.show_logged_in_home_page()
 
@@ -215,6 +219,32 @@ class UserController:
         elif page.navigation == Navigation.BACK:
             self.show_user_profile()
 
+    def show_user_favorite_ads(self):
+        favorite_properties = []
+        if self.user.favorite_properties is not None:
+            for fp_name in self.user.favorite_properties:
+                for room in self.room_controller.rooms:
+                    if fp_name == room.id:
+                        favorite_properties.append(room)
+        page = UserFavoriteAds(favorite_properties, self)
+        if page.navigation == Navigation.ROOM:
+            self.show_favorite_room(page.room)
+        elif page.navigation == Navigation.BACK:
+            self.show_user_profile()
+
+    def show_favorite_room(self, room):
+        page = FavoriteRoom(room)
+        if page.navigation == Navigation.BACK:
+            self.show_user_favorite_ads()
+
+    def delete_favorite_room(self, room):
+        if room.id in self.user.favorite_properties:
+            index = self.user.favorite_properties.index(room.id)
+            del self.user.favorite_properties[index]
+            self.update_user(self.user)
+            return True
+        else:
+            return False
 
 controller = UserController()
 controller.dao.add(User(email="victor@gmail.com", password="135"))

@@ -4,7 +4,7 @@ from app.features.roomie.entities.roomie import Roomie
 
 class User:
     def __init__(self, name=None, surname=None, birthday=None, sex=None, cpf=None, cellphone_number=None, email=None,
-                 password=None, property_ad=None, roommate_ad=None):
+                 password=None, property_ad=None, roommate_ad=None, favorite_properties=None):
         self.__name = None
         self.__surname = None
         self.__birthday = None
@@ -15,6 +15,7 @@ class User:
         self.__password = None
         self.__property_ad = None
         self.__roommate_ad = None
+        self.__favorite_properties = None
         if isinstance(name, str):
             self.__name = name
         if isinstance(surname, str):
@@ -35,6 +36,8 @@ class User:
             self.__property_ad = property_ad
         if isinstance(roommate_ad, Roomie):
             self.__roommate_ad = roommate_ad
+        if isinstance(favorite_properties, list):
+            self.__favorite_properties = favorite_properties
 
     @property
     def id(self):
@@ -129,3 +132,18 @@ class User:
     def roommate_ad(self, roommate_ad) -> None:
         if roommate_ad is None or isinstance(roommate_ad, Roomie):
             self.__roommate_ad = roommate_ad
+
+    @property
+    def favorite_properties(self):
+        return self.__favorite_properties
+
+    @favorite_properties.setter
+    def favorite_properties(self, favorite_properties):
+        if isinstance(favorite_properties, list):
+            self.__favorite_properties = favorite_properties
+
+    def add_favorite_property(self, favorite_property):
+        if isinstance(self.favorite_properties, list):
+            self.favorite_properties.append(favorite_property)
+        else:
+            self.favorite_properties = [favorite_property]
