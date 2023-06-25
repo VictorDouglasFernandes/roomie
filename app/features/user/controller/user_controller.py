@@ -10,6 +10,7 @@ from app.features.user.presentation.create_ads import CreateAds
 from app.features.user.presentation.edit_account import EditAccount
 from app.features.user.presentation.logged_in_home_page import LoggedInHomePage
 from app.features.user.presentation.login import Login
+from app.features.user.presentation.roomie_home_page import RoomieHomePage
 from app.features.user.presentation.search_ads import SearchAds
 from app.features.user.presentation.user_ads import UserAds
 from app.features.user.presentation.user_profile import UserProfile
@@ -127,7 +128,7 @@ class UserController:
     def rate_system(self, user, system_grade):
         if user.system_grade is None:
             user.system_grade = system_grade
-            # dao
+            self.dao.add(user)
             return True
         else:
             return False
@@ -168,6 +169,9 @@ class UserController:
             self.show_user_profile()
         elif page.navigation == Navigation.BACK:
             self.show_login()
+
+    def show_roomie_home_page(self):
+        RoomieHomePage(self)
 
     def show_create_ads(self):
         page = CreateAds()
@@ -236,7 +240,8 @@ class UserController:
 
 
 controller = UserController()
-controller.dao.add(User(email="victor@gmail.com", password="135"))
+controller.dao.add(User(email="victor@gmail.com", password="135", ))
 controller.dao.add(User(email="gabriel@hotmail.com", password="12345"))
 controller.show_login()
+# controller.show_roomie_home_page()
 # controller.show_user_register()

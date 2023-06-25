@@ -46,7 +46,8 @@ class Login:
         self.bt_entrar = Button(self.frame_1, text="ENTRAR", fg='white', bg='#f4bc44', font=('JasmineUPC', 8), command=self.enter_user_data)
         self.bt_entrar.place(relx=0.25, rely=0.6, relwidth=0.7, relheight=0.15)
 
-        self.bt_sair = Button(self.frame_2, text="VOLTAR", fg='white', bg='#f4bc44', font=('JasmineUPC', 8))
+        self.bt_sair = Button(self.frame_2, text="VOLTAR", fg='white', bg='#f4bc44', font=('JasmineUPC', 8),
+                              command=self.back)
         self.bt_sair.place(relx=0, rely=0.6, relwidth=0.7, relheight=0.15)
 
         self.bt_recuperar_senha = Button(self.frame_2, text="Recuperar senha", fg='#f4bc44', bg='white', font=('JasmineUPC', 10))
@@ -54,3 +55,7 @@ class Login:
 
     def showMessageError(self, title, message):
         tkinter.messagebox.showwarning(title=title, message=message)
+
+    def back(self):
+        self.navigation = Navigation.BACK
+        self.raiz.destroy()
