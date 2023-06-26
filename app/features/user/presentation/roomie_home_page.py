@@ -6,12 +6,10 @@ from app.commons.fonts.fonts import manrope18
 from app.commons.navigation import Navigation
 from app.commons.ui.default_single_frame import DefaultSingleFrame
 from app.commons.ui.label_detail import LabelDetail
-from app.features.user.presentation.login import Login
-from app.features.user.presentation.user_register import UserRegister
 
 
 class RoomieHomePage:
-    def __init__(self, controller):
+    def __init__(self):
         self.navigation = None
         self.raiz = Tk()
         title = "Roomie"
@@ -26,7 +24,7 @@ class RoomieHomePage:
 
         self.frame = Frame(self.raiz, bd=4, bg=kYellow)
         self.frame.place(relx=0.1, rely=0.1, relheight=0.80, relwidth=0.8)
-        self.controller = controller
+
         self.label()
         self.botoes()
 
@@ -51,12 +49,12 @@ class RoomieHomePage:
         self.bt_entrar.place(relx=0.345, rely=0.7, relwidth=0.3, relheight=0.08)
 
     def show_login_page(self):
+        self.navigation = Navigation.GET
         self.raiz.destroy()
-        Login(self.controller)
 
     def show_register_page(self):
+        self.navigation = Navigation.PUT
         self.raiz.destroy()
-        UserRegister(self.controller)
 
 
 # teste = RoomieHomePage()

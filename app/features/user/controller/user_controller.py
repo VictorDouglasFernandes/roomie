@@ -107,6 +107,8 @@ class UserController:
                 if grade.email == self.user.id:
                     self.user.system_grade = grade
             self.show_logged_in_home_page()
+        elif page.navigation == Navigation.BACK:
+            self.show_roomie_home_page()
 
     def show_user_register(self):
         page = UserRegister(self)
@@ -114,7 +116,7 @@ class UserController:
             self.add_user(page.user)
             self.show_login()
         elif page.navigation == Navigation.BACK:
-            pass
+            self.show_roomie_home_page()
 
     def show_account_details(self):
         page = AccountDetails(self.user)
@@ -180,7 +182,11 @@ class UserController:
             self.show_login()
 
     def show_roomie_home_page(self):
-        RoomieHomePage(self)
+        page = RoomieHomePage()
+        if page.navigation == Navigation.PUT:
+            self.show_user_register()
+        elif page.navigation == Navigation.GET:
+            self.show_login()
 
     def show_create_ads(self):
         page = CreateAds()
@@ -283,6 +289,6 @@ controller.dao.add(User(name="gabriel", surname="guglielmi", birthday="02/02/200
                         cellphone_number="48 888888888", email="gabriel@hotmail.com", password="12345"))
 controller.dao.add(User(name="kamilly", surname="victoria", birthday="03/03/2000", sex="FEMALE", cpf="66666666666",
                         cellphone_number="48 777777777", email="kami@live.com", password="123"))
-controller.show_login()
-# controller.show_roomie_home_page()
+
+controller.show_roomie_home_page()
 # controller.show_user_register()
