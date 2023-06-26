@@ -7,7 +7,7 @@ class PropertyAd(Ad):
                  rooms=None, bathrooms=None, has_collateral=None, accept_smoker=None, accept_pets=None,
                  accept_childs=None, private_condominium=None,
                  has_garage=None, has_gym=None, has_concierge=None, has_pool=None, has_party_hall=None,
-                 interested_users=None, interested_users_emails=None, questions=None, answers=None):
+                 interested_users=None, interested_users_emails=None, questions=None, answers=None, ratings=None):
         super().__init__(email, share_date, active, interested_users_emails)
         self.__rent_money = None
         self.__expenses_money = None
@@ -30,6 +30,7 @@ class PropertyAd(Ad):
         self.__interested_users = None
         self.__questions = None
         self.__answers = None
+        self.__ratings = None
         if isinstance(email, str):
             self.__email = email
         if isinstance(rent_money, float):
@@ -74,6 +75,8 @@ class PropertyAd(Ad):
             self.__questions = questions
         if isinstance(answers, list):
             self.__answers = answers
+        if isinstance(ratings, list):
+            self.__ratings = ratings
 
     @property
     def id(self):
@@ -236,7 +239,7 @@ class PropertyAd(Ad):
             self.__interested_users.append(user)
         else:
             self.__interested_users = [user]
-    
+
     @property
     def questions(self):
         return self.__questions
@@ -251,6 +254,8 @@ class PropertyAd(Ad):
         else:
             self.questions = [question]
 
+
+
     @property
     def answers(self):
         return self.__answers
@@ -264,3 +269,17 @@ class PropertyAd(Ad):
             self.answers.append(answer)
         else:
             self.answers = [answer]
+
+    @property
+    def ratings(self):
+        return self.__ratings
+
+    @ratings.setter
+    def ratings(self, ratings):
+        self.__ratings = ratings
+
+    def add_ratings(self, ratings):
+        if isinstance(self.ratings, list):
+            self.ratings.append(ratings)
+        else:
+            self.ratings = [ratings]

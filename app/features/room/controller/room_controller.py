@@ -7,6 +7,7 @@ from app.features.room.entities.property_ad import PropertyAd
 from app.features.room.presentation.add_room import AddRoom
 from app.features.room.presentation.edit_room import EditRoom
 from app.features.room.presentation.list_room import ListRoom
+from app.features.room.presentation.rating import Rating
 from app.features.room.presentation.room_ad_page import RoomAdPage
 from app.features.room.presentation.room_detail_page import RoomDetailPage
 from app.features.room.presentation.qea_user import QeAUser
@@ -181,13 +182,22 @@ class RoomController:
                 room.add_interested_user_email(self.user.email)
                 self.dao.add(room)
             return self.show_list_room()
-        elif show_questions(page.navigation):
+        elif page.navigation == Navigation.QUESTIONS:
             self.show_questions_page(room)
+        elif page.navigation == Navigation.RATING:
+            self.show_rating(room)
 
     def show_questions_page(self, room):
         def is_back(navigation):
             return navigation == Navigation.BACK
         page = QeAUser(room, self)
+        if is_back(page.navigation):
+            return self.show_room_ad_page(room)
+
+    def show_rating(self, room):
+        def is_back(navigation):
+            return navigation == Navigation.BACK
+        page = Rating(room, self, room.email == self.user.email)
         if is_back(page.navigation):
             return self.show_room_ad_page(room)
 
@@ -213,6 +223,14 @@ class RoomController:
         if self.check_question(question, room):
             room.add_question(question)
             room.add_answer("")
+            self.dao.add(room)
+            return True
+        else:
+            return False
+
+    def add_room_rating(self, rating, room):
+        if room.add_ratings is None or rating not in room.ratings:
+            room.add_ratings(rating)
             self.dao.add(room)
             return True
         else:
