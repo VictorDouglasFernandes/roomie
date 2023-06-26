@@ -82,22 +82,22 @@ class RoomieController:
             return self.show_list_roomie()
 
     def show_roomie_detail_page(self, roomie):
-        page = RoomieDetailPage()
+        page = RoomieDetailPage(roomie)
         if page.navigation == Navigation.PUT:
-            self.show_edit_roomie(roomie)
+            return self.show_edit_roomie(roomie)
         elif page.navigation == Navigation.PUT or page.navigation == Navigation.BACK:
             if page.navigation == Navigation.DELETE:
                 self.excluir(roomie)
-            pass
+            return page.navigation
 
     def show_edit_roomie(self, roomie):
         page = EditRoomie(self, roomie)
         if page.navigation == Navigation.PUT:
             page.roomie.share_date = datetime.now()
             self.alterar(page.roomie)
-            self.show_roomie_detail_page(page.roomie)
+            return self.show_roomie_detail_page(page.roomie)
         elif page.navigation == Navigation.BACK:
-            self.show_roomie_detail_page(roomie)
+            return self.show_roomie_detail_page(roomie)
 
 
 #controller = RoomieController()

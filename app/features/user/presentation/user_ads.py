@@ -4,11 +4,12 @@ from app.features.user.entities.user import *
 
 
 class UserAds:
-    def __init__(self, user=None, controller=None):
+    def __init__(self, user=None, room_controller=None, roomie_controller=None):
         self.raiz = Tk()
         self.navigation = None
         self.update = None
-        self.controller = controller
+        self.room_controller = room_controller
+        self.roomie_controller = roomie_controller
         self.user = user
         self.tela()
         self.botoes()
@@ -109,20 +110,20 @@ class UserAds:
         if status == "Ativo":
             self.property_status_anuncio.config(text="Inativo", fg='grey')
             self.user.property_ad.active = False
-            self.controller.dao.add(self.user.property_ad)
+            self.room_controller.dao.add(self.user.property_ad)
         else:
             self.property_status_anuncio.config(text="Ativo", fg='#f4bc44')
             self.user.property_ad.active = True
-            self.controller.dao.add(self.user.property_ad)
+            self.room_controller.dao.add(self.user.property_ad)
 
     def roomie_status_switch(self):
         status = self.roomie_status_anuncio["text"]
         if status == "Ativo":
             self.roomie_status_anuncio.config(text="Inativo", fg='grey')
             self.user.roommate_ad.active = False
-            # dao
+            self.roomie_controller.dao.add(self.user.roommate_ad)
         else:
             self.roomie_status_anuncio.config(text="Ativo", fg='#f4bc44')
             self.user.roommate_ad.active = True
-            # dao
+            self.roomie_controller.dao.add(self.user.roommate_ad)
 
