@@ -197,7 +197,7 @@ class RoomController:
         elif page.navigation == Navigation.QUESTIONS:
             self.show_questions_page(room)
         elif page.navigation == Navigation.RATING:
-            self.show_rating(room)
+            return self.show_rating(room)
 
     def show_questions_page(self, room):
         def is_back(navigation):
@@ -218,7 +218,7 @@ class RoomController:
             return navigation == Navigation.BACK
         page = QeAAdOwner(room, self)
         if is_back(page.navigation):
-            self.show_room_detail_page(room)
+            return self.show_room_detail_page(room)
 
     def show_room_detail_page(self, room):
         page = RoomDetailPage(room)
@@ -229,7 +229,7 @@ class RoomController:
                 self.delete_ad_room(room)
             return page.navigation
         elif page.navigation == Navigation.QUESTIONS:
-            self.show_owner_questions_page(room)
+            return self.show_owner_questions_page(room)
 
     def add_room_question(self, question, room):
         if self.check_question(question, room):
