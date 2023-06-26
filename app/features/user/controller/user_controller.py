@@ -10,16 +10,21 @@ from app.features.user.presentation.create_ads import CreateAds
 from app.features.user.presentation.edit_account import EditAccount
 from app.features.user.presentation.logged_in_home_page import LoggedInHomePage
 from app.features.user.presentation.login import Login
+from app.features.user.presentation.roomie_home_page import RoomieHomePage
 from app.features.user.presentation.search_ads import SearchAds
 from app.features.user.presentation.user_ads import UserAds
 from app.features.user.presentation.user_profile import UserProfile
 from app.features.user.presentation.user_register import UserRegister
+from app.features.user.entities.system_grade import SystemGrade
+from app.features.user.presentation.system_grade_page import SystemGradePage
+from app.features.user.repository.system_grade_db import SystemGradeDB
 from app.features.user.repository.user_db import UserDB
 
 
 class UserController:
     def __init__(self):
         self.dao = UserDB()
+        self.system_grade_dao = SystemGradeDB()
         self.user = None
         self.room_controller = room_controller.RoomController(self)
         self.roomie_controller = roomie_controller.RoomieController(self)
@@ -96,6 +101,9 @@ class UserController:
     def show_login(self):
         page = Login(self)
         if page.navigation == Navigation.GET:
+            for grade in self.system_grade_dao.get_all():
+                if grade.email == self.user.id:
+                    self.user.system_grade = grade
             self.show_logged_in_home_page()
 
     def show_user_register(self):
@@ -115,6 +123,25 @@ class UserController:
             self.show_login()
         elif page.navigation == Navigation.BACK:
             self.show_user_profile()
+        elif page.navigation == Navigation.RATE:
+            self.show_system_grade()
+
+    def show_system_grade(self):
+        page = SystemGradePage(self.user, self)
+        if page.navigation == Navigation.BACK:
+            self.show_account_details()
+
+    def rate_system(self, user, grade):
+        if user.system_grade is None:
+            user.system_grade = SystemGrade(user.id, grade)
+            self.system_grade_dao.add(user.system_grade)
+            self.dao.add(user)
+            return True
+        else:
+            return False
+
+    def check_system_grade_size(self, system_grade):
+        return len(system_grade) <= 200
 
     def show_edit_account(self):
         page = EditAccount(self)
@@ -149,6 +176,9 @@ class UserController:
             self.show_user_profile()
         elif page.navigation == Navigation.BACK:
             self.show_login()
+
+    def show_roomie_home_page(self):
+        RoomieHomePage(self)
 
     def show_create_ads(self):
         page = CreateAds()
@@ -200,7 +230,7 @@ class UserController:
             self.show_logged_in_home_page()
 
     def show_user_ads(self):
-        page = UserAds(self.user)
+        page = UserAds(self.user, self.room_controller)
         if page.navigation == Navigation.ROOM:
             navigation = self.room_controller.show_room_detail_page(self.user.property_ad)
             if navigation is not None:
@@ -217,7 +247,12 @@ class UserController:
 
 
 controller = UserController()
-controller.dao.add(User(email="victor@gmail.com", password="135"))
-controller.dao.add(User(email="gabriel@hotmail.com", password="12345"))
+controller.dao.add(User(name="victor", surname="douglas", birthday="01/01/2000", sex="MALE", cpf="8888888888",
+                        cellphone_number="48 999999999", email="victor@gmail.com", password="135"))
+controller.dao.add(User(name="gabriel", surname="guglielmi", birthday="02/02/2000", sex="MALE", cpf="77777777777",
+                        cellphone_number="48 888888888", email="gabriel@hotmail.com", password="12345"))
+controller.dao.add(User(name="kamilly", surname="victoria", birthday="03/03/2000", sex="FEMALE", cpf="66666666666",
+                        cellphone_number="48 777777777", email="kami@live.com", password="123"))
 controller.show_login()
+# controller.show_roomie_home_page()
 # controller.show_user_register()

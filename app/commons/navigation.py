@@ -14,4 +14,5 @@ class Navigation(Enum):
     QUESTIONS = "QUESTIONS"
     INTEREST = "INTEREST"
     RATING = "RATING"
+    RATE = "RATE"
 

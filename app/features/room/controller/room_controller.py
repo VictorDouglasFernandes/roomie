@@ -130,8 +130,11 @@ class RoomController:
             return navigation == Navigation.BACK
         def see_detail(navigation):
             return navigation == Navigation.GET
-
-        page = ListRoom(self.rooms, self)
+        active_room_ads = []
+        for room in self.rooms:
+            if room.active:
+                active_room_ads.append(room)
+        page = ListRoom(active_room_ads, self)
         if see_detail(page.navigation):
             room = page.filtered_rooms[page.selected_id]
             return self.show_room_ad_page(room)
@@ -174,6 +177,7 @@ class RoomController:
             return self.user.email not in room.interested_users_emails
         def show_questions(navigation):
             return navigation == Navigation.QUESTIONS
+
         page = RoomAdPage(room, room.email == self.user.email)
         if is_back(page.navigation):
             return self.show_list_room()

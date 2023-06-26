@@ -4,10 +4,11 @@ from app.features.user.entities.user import *
 
 
 class UserAds:
-    def __init__(self, user=None):
+    def __init__(self, user=None, controller=None):
         self.raiz = Tk()
         self.navigation = None
         self.update = None
+        self.controller = controller
         self.user = user
         self.tela()
         self.botoes()
@@ -32,8 +33,9 @@ class UserAds:
                                                     font=('JasmineUPC', 10), command=self.manage_property_ad)
         self.property_bt_gerenciar_anuncio.place(relx=0.43, rely=0.15, relwidth=0.15, relheight=0.08)
 
-        self.property_bt_gerenciar_anuncio = Button(self.frame_1, text="STATUS DO \n ANÚNCIO", fg='white', bg='#f4bc44',
-                                                    font=('JasmineUPC', 10), command=self.status_property_ad)
+        self.property_bt_gerenciar_anuncio = Button(self.frame_1, text="ALTERAR STATUS DO \n ANÚNCIO", fg='white',
+                                                    bg='#f4bc44', font=('JasmineUPC', 7),
+                                                    command=self.property_status_switch)
         self.property_bt_gerenciar_anuncio.place(relx=0.63, rely=0.15, relwidth=0.15, relheight=0.08)
 
         self.property_titulo_anuncio = Label(self.frame_1, text="Anúncio Quarto", font=('JasmineUPC', 15), bg='#fff',
@@ -45,9 +47,12 @@ class UserAds:
                                            fg='#f4bc44')
         self.property_tipo_anuncio.place(relx=0.20, rely=0.15, relwidth=0.2, relheight=0.08)
 
-        self.property_status_anuncio = Label(self.frame_1, text="Ativo" if self.user.property_ad.active else "Inativo",
-                                             font=('JasmineUPC', 12), bg='#fff',
-                                             fg='#f4bc44')
+        if self.user.property_ad.active:
+            self.property_status_anuncio = Label(self.frame_1, text="Ativo",
+                                               font=('JasmineUPC', 12), bg='#fff', fg='#f4bc44')
+        else:
+            self.property_status_anuncio = Label(self.frame_1, text="Inativo",
+                                               font=('JasmineUPC', 12), bg='#fff', fg='grey')
         self.property_status_anuncio.place(relx=0.80, rely=0.15, relwidth=0.2, relheight=0.08)
 
     def roomie_label(self):
@@ -55,8 +60,9 @@ class UserAds:
                                                   font=('JasmineUPC', 10), command=self.manage_roomie_ad)
         self.roomie_bt_gerenciar_anuncio.place(relx=0.43, rely=0.35, relwidth=0.15, relheight=0.08)
 
-        self.roomie_bt_gerenciar_anuncio = Button(self.frame_1, text="STATUS DO \n ANÚNCIO", fg='white', bg='#f4bc44',
-                                                  font=('JasmineUPC', 10), command=self.status_roomie_ad)
+        self.roomie_bt_gerenciar_anuncio = Button(self.frame_1, text="ALTERAR STATUS DO \n ANÚNCIO", fg='white',
+                                                  bg='#f4bc44', font=('JasmineUPC', 7),
+                                                  command=self.roomie_status_switch)
         self.roomie_bt_gerenciar_anuncio.place(relx=0.63, rely=0.35, relwidth=0.15, relheight=0.08)
 
         self.roomie_titulo_anuncio = Label(self.frame_1, text="Anúncio Colega", font=('JasmineUPC', 15), bg='#fff',
@@ -68,9 +74,12 @@ class UserAds:
                                          fg='#f4bc44')
         self.roomie_tipo_anuncio.place(relx=0.20, rely=0.35, relwidth=0.2, relheight=0.08)
 
-        self.roomie_status_anuncio = Label(self.frame_1, text="Ativo" if self.user.roommate_ad.active else "Inativo",
-                                           font=('JasmineUPC', 12), bg='#fff',
-                                           fg='#f4bc44')
+        if self.user.roommate_ad.active:
+            self.roomie_status_anuncio = Label(self.frame_1, text="Ativo",
+                                               font=('JasmineUPC', 12), bg='#fff', fg='#f4bc44')
+        else:
+            self.roomie_status_anuncio = Label(self.frame_1, text="Inativo",
+                                               font=('JasmineUPC', 12), bg='#fff', fg='grey')
         self.roomie_status_anuncio.place(relx=0.80, rely=0.35, relwidth=0.2, relheight=0.08)
 
     def manage_property_ad(self):
@@ -81,16 +90,39 @@ class UserAds:
         self.navigation = Navigation.ROOMIE
         self.raiz.destroy()
 
-    def status_property_ad(self):
-        self.navigation = Navigation.PUT
-        self.update = Navigation.ROOM
-        self.raiz.destroy()
-
-    def status_roomie_ad(self):
-        self.navigation = Navigation.PUT
-        self.update = Navigation.ROOMIE
-        self.raiz.destroy()
+    # def status_property_ad(self):
+    #     self.navigation = Navigation.PUT
+    #     self.update = Navigation.ROOM
+    #     self.raiz.destroy()
+    #
+    # def status_roomie_ad(self):
+    #     self.navigation = Navigation.PUT
+    #     self.update = Navigation.ROOMIE
+    #     self.raiz.destroy()
 
     def back(self):
         self.navigation = Navigation.BACK
         self.raiz.destroy()
+
+    def property_status_switch(self):
+        status = self.property_status_anuncio["text"]
+        if status == "Ativo":
+            self.property_status_anuncio.config(text="Inativo", fg='grey')
+            self.user.property_ad.active = False
+            self.controller.dao.add(self.user.property_ad)
+        else:
+            self.property_status_anuncio.config(text="Ativo", fg='#f4bc44')
+            self.user.property_ad.active = True
+            self.controller.dao.add(self.user.property_ad)
+
+    def roomie_status_switch(self):
+        status = self.roomie_status_anuncio["text"]
+        if status == "Ativo":
+            self.roomie_status_anuncio.config(text="Inativo", fg='grey')
+            self.user.roommate_ad.active = False
+            # dao
+        else:
+            self.roomie_status_anuncio.config(text="Ativo", fg='#f4bc44')
+            self.user.roommate_ad.active = True
+            # dao
+

@@ -1,10 +1,11 @@
 from app.features.room.entities.property_ad import PropertyAd
 from app.features.roomie.entities.roomie import Roomie
+from app.features.user.entities.system_grade import SystemGrade
 
 
 class User:
     def __init__(self, name=None, surname=None, birthday=None, sex=None, cpf=None, cellphone_number=None, email=None,
-                 password=None, property_ad=None, roommate_ad=None):
+                 password=None, property_ad=None, roommate_ad=None, system_grade=None):
         self.__name = None
         self.__surname = None
         self.__birthday = None
@@ -15,6 +16,7 @@ class User:
         self.__password = None
         self.__property_ad = None
         self.__roommate_ad = None
+        self.__system_grade = None
         if isinstance(name, str):
             self.__name = name
         if isinstance(surname, str):
@@ -35,6 +37,8 @@ class User:
             self.__property_ad = property_ad
         if isinstance(roommate_ad, Roomie):
             self.__roommate_ad = roommate_ad
+        if isinstance(system_grade, SystemGrade):
+            self.__system_grade = system_grade
 
     @property
     def id(self):
@@ -129,3 +133,11 @@ class User:
     def roommate_ad(self, roommate_ad) -> None:
         if roommate_ad is None or isinstance(roommate_ad, Roomie):
             self.__roommate_ad = roommate_ad
+
+    @property
+    def system_grade(self):
+        return self.__system_grade
+
+    @system_grade.setter
+    def system_grade(self, system_grade):
+        self.__system_grade = system_grade

@@ -34,9 +34,9 @@ class UserRegister:
         self.entrada_surname = Entry(self.frame_2, bg='#f4bc44', fg='white')
         self.entrada_surname.place(relx=0, rely=0.12, relwidth=0.7, relheight=0.06)
 
-        self.lb_birthday = Label(self.frame_1, text="* Data de nascimento", font=('JasmineUPC', 13), bg='#fff',
-                                 fg='#f4bc44')
-        self.lb_birthday.place(relx=0.25, rely=0.2)
+        self.lb_birthday = Label(self.frame_1, text="* Data \n  de nascimento", font=('JasmineUPC', 20), bg='#fff',
+                                 fg='#f4bc44', justify=LEFT)
+        self.lb_birthday.place(relx=0.25, rely=0.18)
         self.entrada_birthday = Entry(self.frame_2, bg='#f4bc44', fg='white')
         self.entrada_birthday.place(relx=0, rely=0.22, relwidth=0.7, relheight=0.06)
 

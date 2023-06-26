@@ -50,7 +50,7 @@ class AccountDetails:
         self.raiz.destroy()
 
     def rate(self):
-        #self.navigation = Navigation.RATE # TODO
+        self.navigation = Navigation.RATE
         self.raiz.destroy()
 
     def back(self):
