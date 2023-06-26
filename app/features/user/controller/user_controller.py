@@ -15,13 +15,16 @@ from app.features.user.presentation.search_ads import SearchAds
 from app.features.user.presentation.user_ads import UserAds
 from app.features.user.presentation.user_profile import UserProfile
 from app.features.user.presentation.user_register import UserRegister
-from app.features.user.presentation.system_grade import SystemGrade
+from app.features.user.entities.system_grade import SystemGrade
+from app.features.user.presentation.system_grade_page import SystemGradePage
+from app.features.user.repository.system_grade_db import SystemGradeDB
 from app.features.user.repository.user_db import UserDB
 
 
 class UserController:
     def __init__(self):
         self.dao = UserDB()
+        self.system_grade_dao = SystemGradeDB()
         self.user = None
         self.room_controller = room_controller.RoomController(self)
         self.roomie_controller = roomie_controller.RoomieController(self)
@@ -98,6 +101,9 @@ class UserController:
     def show_login(self):
         page = Login(self)
         if page.navigation == Navigation.GET:
+            for grade in self.system_grade_dao.get_all():
+                if grade.email == self.user.id:
+                    self.user.system_grade = grade
             self.show_logged_in_home_page()
 
     def show_user_register(self):
@@ -121,13 +127,14 @@ class UserController:
             self.show_system_grade()
 
     def show_system_grade(self):
-        page = SystemGrade(self.user, self)
+        page = SystemGradePage(self.user, self)
         if page.navigation == Navigation.BACK:
             self.show_account_details()
 
-    def rate_system(self, user, system_grade):
+    def rate_system(self, user, grade):
         if user.system_grade is None:
-            user.system_grade = system_grade
+            user.system_grade = SystemGrade(user.id, grade)
+            self.system_grade_dao.add(user.system_grade)
             self.dao.add(user)
             return True
         else:

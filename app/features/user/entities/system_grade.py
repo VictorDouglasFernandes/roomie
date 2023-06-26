@@ -3,7 +3,8 @@ from app.commons.entities.grade import Grade
 class SystemGrade(Grade):
     def __init__(self, email=None, description=None):
         super().__init__(email)
-        self.__description = None
+        self.__description = description
+
     @property
     def description(self):
         return self.__description

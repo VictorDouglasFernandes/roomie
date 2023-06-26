@@ -7,7 +7,7 @@ from app.commons.ui.default_single_frame import DefaultSingleFrame
 from app.commons.ui.label_detail import LabelDetail
 
 
-class SystemGrade:
+class SystemGradePage:
     def __init__(self, user, controller=None):
         self.navigation = None
         self.user = user
