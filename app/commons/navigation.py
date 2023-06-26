@@ -15,4 +15,5 @@ class Navigation(Enum):
     INTEREST = "INTEREST"
     RATING = "RATING"
     RATE = "RATE"
+    FAVORITE = "FAVORITE"
 

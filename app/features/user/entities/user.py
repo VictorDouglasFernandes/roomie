@@ -5,7 +5,7 @@ from app.features.user.entities.system_grade import SystemGrade
 
 class User:
     def __init__(self, name=None, surname=None, birthday=None, sex=None, cpf=None, cellphone_number=None, email=None,
-                 password=None, property_ad=None, roommate_ad=None, system_grade=None):
+                 password=None, property_ad=None, roommate_ad=None, favorite_properties=None, system_grade=None):
         self.__name = None
         self.__surname = None
         self.__birthday = None
@@ -17,6 +17,7 @@ class User:
         self.__property_ad = None
         self.__roommate_ad = None
         self.__system_grade = None
+        self.__favorite_properties = None
         if isinstance(name, str):
             self.__name = name
         if isinstance(surname, str):
@@ -39,6 +40,8 @@ class User:
             self.__roommate_ad = roommate_ad
         if isinstance(system_grade, SystemGrade):
             self.__system_grade = system_grade
+        if isinstance(favorite_properties, list):
+            self.__favorite_properties = favorite_properties
 
     @property
     def id(self):
@@ -141,3 +144,18 @@ class User:
     @system_grade.setter
     def system_grade(self, system_grade):
         self.__system_grade = system_grade
+
+    @property
+    def favorite_properties(self):
+        return self.__favorite_properties
+
+    @favorite_properties.setter
+    def favorite_properties(self, favorite_properties):
+        if isinstance(favorite_properties, list):
+            self.__favorite_properties = favorite_properties
+
+    def add_favorite_property(self, favorite_property):
+        if isinstance(self.favorite_properties, list):
+            self.favorite_properties.append(favorite_property)
+        else:
+            self.favorite_properties = [favorite_property]
