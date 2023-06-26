@@ -230,7 +230,7 @@ class UserController:
             self.show_logged_in_home_page()
 
     def show_user_ads(self):
-        page = UserAds(self.user)
+        page = UserAds(self.user, self.room_controller)
         if page.navigation == Navigation.ROOM:
             navigation = self.room_controller.show_room_detail_page(self.user.property_ad)
             if navigation is not None:

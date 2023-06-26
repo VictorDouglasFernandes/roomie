@@ -4,10 +4,11 @@ from app.features.user.entities.user import *
 
 
 class UserAds:
-    def __init__(self, user=None):
+    def __init__(self, user=None, controller=None):
         self.raiz = Tk()
         self.navigation = None
         self.update = None
+        self.controller = controller
         self.user = user
         self.tela()
         self.botoes()
@@ -108,11 +109,11 @@ class UserAds:
         if status == "Ativo":
             self.property_status_anuncio.config(text="Inativo", fg='grey')
             self.user.property_ad.active = False
-            # dao
+            self.controller.dao.add(self.user.property_ad)
         else:
             self.property_status_anuncio.config(text="Ativo", fg='#f4bc44')
             self.user.property_ad.active = True
-            # dao
+            self.controller.dao.add(self.user.property_ad)
 
     def roomie_status_switch(self):
         status = self.roomie_status_anuncio["text"]
